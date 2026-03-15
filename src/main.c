@@ -4,12 +4,12 @@
 
 #include <stdio.h>
 
-#include "reaction_types.h"
-#include "reaction_functions.h"
+#include "include/reaction_types.h"
+#include "include/reaction_functions.h"
 
 int main(){
   /* defines the stoichiometric ratio of the reaction */
-  struct reaction_data main_reaction = {};
+  struct ReactionData main_reaction = {};
   defineMainReactionData(&main_reaction);
 
   printf("Main reaction data: ");

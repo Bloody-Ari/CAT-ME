@@ -1,5 +1,5 @@
 /* I need to add tabs lmao */
-struct reaction_data {
+struct ReactionData {
   float fuel_g;
   float fuel_mol;
   float oxidizer_g;
