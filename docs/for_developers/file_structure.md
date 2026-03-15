@@ -17,7 +17,7 @@ Basic example of the source directory:
  │   ├── main.c
   │  └── reaction_functions.c
 
-##Bin and Build Directories  🛠
+## Bin and Build Directories  🛠
 Both of these directories are to be used for compilation, the bin directory should be used to store the needed binaries to run the tool and, the build directory, to store temporary files like object files. This means that if you just want the binary, it should be in the /bin directory.
 
 These directories should be cleaned by *make clean*, here's a simple example:
