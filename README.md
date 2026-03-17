@@ -7,11 +7,6 @@ This project aims to aid the development of the CP-1 proyect. Which, for now, en
 Most of this documentation, apart from code guidelines, should be taken with a grain of salt. This project is in development and the documentation is being "templated" first.
 For instance, the file structure is layed out but not fully in use, so you may spot some things. Compilation instructions are not really there, there's no usage and some other details are still rough.
 
-## Table of Contents
-[TOCM]
-
-[TOC]
-
 # Current Scope 🔍
 
 - [ ] Stoichiometric calculation of a chemical reaction involving 2 reactants and 2 products.
