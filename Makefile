@@ -50,7 +50,10 @@ $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c
 	$(CC) $(CFLAGS) $(CPPFLAGS) -c -o $@ $<
 	$(info CREATED $@)
 
-run: $(NAME)
+run: clean $(NAME)
+	bin/cat-me
+
+run-no-clean: $(NAME)
 	bin/cat-me
 
 clean:
