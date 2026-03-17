@@ -1,4 +1,3 @@
-/* I need to add tabs lmao */
 struct ReactionData {
   float fuel_g;
   float fuel_mol;
@@ -11,7 +10,7 @@ struct ReactionData {
   float oxidizer_residue_g;
 
   float main_product_g;
-  float h2_mol;
+  float main_product_mol;
 
   float of_ratio;
 };
