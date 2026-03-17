@@ -40,23 +40,41 @@ As it has been said before, writing the project in C allows it to be easily port
 It may not be wisest idea to write something with the "it will get rewritten later" mentality (I know this from experience), but I also think it's important to not forget that this project probably won't get to that scale either and if it does the requirements and time scale will change too. So, in turn, it's not like this **will** get rewritten, but it *may* get rewritten and, if it does, I want to be a dwm to dwl, a clean adaptation to new needs.
 
 # Basic File Structure 📂
- . proyect folder
-	├── bin
-	├── build
-	│   └── object files, temporary build files.
-	├── docs
-	│   ├── for_developers
-	│   │   └── Documentation aimed at fellow devs who want to get involved or check the code.
-	│   └── for_users
-	│   │   └── More thorow information about the usage of the tool.
-	├── lib
-	│       └── External libraries.
-	└── src
-	│    ├── include
-	│    │   └── Header files, definitions.
-	│    └── Source code files.
-	├── Makefile
-	└── README.md
+ proyect folder
+
+├── bin	
+
+│   └── target files, basically the main binary directory.
+
+├── build
+
+│   └── object files, temporary build files.
+
+├── docs
+
+│   ├── for_developers
+
+│   │   └── Documentation aimed at fellow devs who want to get involved or check the code.
+
+│   └── for_users
+
+│   │   └── More thorow information about the usage of the tool.
+
+├── lib
+
+│       └── External libraries.
+
+└── src
+
+│    ├── include
+
+│    │   └── Header files, definitions.
+
+│    └── Source code files.
+
+├── Makefile
+
+└── README.md
 
 # Some Code Style Details 🔍
 The code follows the "Power of Ten" rules along some other specific anotations or recommendations
