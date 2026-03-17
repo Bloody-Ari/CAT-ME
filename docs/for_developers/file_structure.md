@@ -1,20 +1,21 @@
 # File Structure 📂
 The file structure it's based around some modularity and ease of use. It's not meant to be perfect, but to be the most usable and understandable for everyone.
 
-[TOCM]
-
-[TOC]
-
 ## Source Directory
 The main idea is to have an src directory which contains all the source code written for the project. This code would be split, at least for now, into source .c files (with the expansion of the projects this files would have to split into several sub directories), and the header files .h, which include (in separate files) declarations of types and functions.
 
 Basic example of the source directory:
 
 └── src
+
 │	└── include
+
  │ 	   │ ├── reaction_functions.h
+ 
 │    │   └── reaction_types.h
+
  │   ├── main.c
+ 
   │  └── reaction_functions.c
 
 ## Bin and Build Directories  🛠
@@ -23,12 +24,15 @@ Both of these directories are to be used for compilation, the bin directory shou
 These directories should be cleaned by *make clean*, here's a simple example:
 
 └── build
-    │   └── reaction_types.o
-    ├── bin
-  │  └── main_executable.out
+
+│   └── reaction_types.o
+
+│   ├── bin
+
+│   │  └── main_executable.out
 
 
-##Lib Directory
+## Lib Directory
 
 This directory is destined to store external libraries. It's empty for now tho.
 

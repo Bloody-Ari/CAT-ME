@@ -2,10 +2,6 @@
 This file includes an introduction to the project aimed at developers and those who want some in depth information.
 It should be enough for those who just want a little peek at the backstage, but don't want to fully inmerse themselves in the code.
 
-[TOCM]
-
-[TOC]
-
 # General Idea 🔭
 In the technical side of things the main idea behind te inner workings of this project is an object oriented programming paradigm, using a class to define the properties of a reaction. The core loop defines the stoichiometric relationship and then applies it to the variable inputs of the user. After making the first calculation it gets recalculated using an introduced Oxidizier to Fuel ratio and, finally, it computes not only the moles but also the mass and volume needed along with the mass and volume of the products.
 
@@ -44,23 +40,41 @@ As it has been said before, writing the project in C allows it to be easily port
 It may not be wisest idea to write something with the "it will get rewritten later" mentality (I know this from experience), but I also think it's important to not forget that this project probably won't get to that scale either and if it does the requirements and time scale will change too. So, in turn, it's not like this **will** get rewritten, but it *may* get rewritten and, if it does, I want to be a dwm to dwl, a clean adaptation to new needs.
 
 # Basic File Structure 📂
- . proyect folder
-	├── bin
-	├── build
-	│   └── object files, temporary build files.
-	├── docs
-	│   ├── for_developers
-	│   │   └── Documentation aimed at fellow devs who want to get involved or check the code.
-	│   └── for_users
-	│   │   └── More thorow information about the usage of the tool.
-	├── lib
-	│       └── External libraries.
-	└── src
-	│    ├── include
-	│    │   └── Header files, definitions.
-	│    └── Source code files.
-	├── Makefile
-	└── README.md
+ proyect folder
+
+├── bin	
+
+│   └── target files, basically the main binary directory.
+
+├── build
+
+│   └── object files, temporary build files.
+
+├── docs
+
+│   ├── for_developers
+
+│   │   └── Documentation aimed at fellow devs who want to get involved or check the code.
+
+│   └── for_users
+
+│   │   └── More thorow information about the usage of the tool.
+
+├── lib
+
+│       └── External libraries.
+
+└── src
+
+│    ├── include
+
+│    │   └── Header files, definitions.
+
+│    └── Source code files.
+
+├── Makefile
+
+└── README.md
 
 # Some Code Style Details 🔍
 The code follows the "Power of Ten" rules along some other specific anotations or recommendations
