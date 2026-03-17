@@ -24,6 +24,15 @@ struct ReactionData createEmptyReactionStruct(){
   return empty_reaction_data;
 }
 
+/* 
+ * Defines the main reaction, I'd like this to be a file read in the future,
+ * for 2 main reasons:
+ * 1. I am not a suckless dev, I don't really want to force people to change the source code
+ * 2. It makes much more sense to just read a .txt file than to hard code :3
+ */
 void defineMainReactionData(struct ReactionData *main_reaction){
-  main_reaction->fuel_mol = 3;
+  main_reaction->fuel_mol = 2;
+  main_reaction->oxidizer_mol = 6;
+
+  main_reaction->of_ratio = 3;
 }
