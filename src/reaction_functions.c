@@ -34,7 +34,10 @@ struct ReactionData createEmptyReactionStruct(){
  */
 void defineMainReactionData(struct ReactionData *main_reaction){
   main_reaction->fuel_mol = 2;
+  main_reaction->fuel_uma = 26.981538;
+
   main_reaction->oxidizer_mol = 6;
+  main_reaction->oxidizer_uma = 36.46;
 
   main_reaction->of_ratio = 3;
 }
