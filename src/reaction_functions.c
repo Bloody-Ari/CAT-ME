@@ -17,7 +17,7 @@ struct ReactionData createEmptyReactionStruct(){
   empty_reaction_data.oxidizer_residue_g = 0;
 
   empty_reaction_data.main_product_g = 0;
-  empty_reaction_data.h2_mol = 0;
+  empty_reaction_data.main_product_mol = 0;
 
   empty_reaction_data.of_ratio = 0;
 
