@@ -1,9 +1,5 @@
 # Coding Guidelines
 
-[TOCM]
-
-[TOC]
-
 ## Hard Rules
 These rules are derived from "The Power of Ten", most of them are just a copy paste with maybe some annotations, in case of doubt refer to the original document.
 
