@@ -44,9 +44,9 @@ int main(){
 
     (void)printf("\nWhat do you want to change?: \n");
     (void)printf("1. Set fuel mass <-- implemented ✔\n");
-    (void)printf("2. Set oxidizer volume ❌\n");
+    (void)printf("2. Set oxidizer volume <-- implemented ✔\n");
     (void)printf("3. Set fuel mol <-- implemented ✔\n");
-    (void)printf("4. Set oxidizer mol ❌\n");
+    (void)printf("4. Set oxidizer mol <-- implemented ✔\n");
     (void)printf("5. Set target product mass ❌\n");
     (void)printf("6. Set target product mol ❌\n");
     (void)printf("7. Change OF ratio ❌\n");
@@ -61,23 +61,26 @@ int main(){
       case -1:
         return 0; /* just quits haha */
       case 1:
-        (void)printf("Recalculating from fuel mass...\n");
-        (void)printf("Input grams of fuel: ");
+        (void)printf("\nInput grams of fuel: ");
         (void)scanf("%f", &input); 
         input /= main_reaction.fuel_uma;
         (void)recalculateFromFuelMol(&main_reaction, input);
         break;
       case 2:
-        (void)printf("Recalculating from oxidizer volume...\n");
+        (void)printf("\nInput ml of oxidizer: ");
+        (void)scanf("%f", &input);
+        input *= main_reaction.oxidizer_molarity / 1000;
+        recalculateFromOxidizerMol(&main_reaction,  input);
         break;
       case 3:
-        (void)printf("Input moles of fuel: ");
+        (void)printf("\nInput moles of fuel: ");
         (void)scanf("%f", &input);
-        (void)printf("Recalculating from %3.2f moles of fuel\n", input);
         (void)recalculateFromFuelMol(&main_reaction, input);
         break;
       case 4:
-        (void)printf("Recalculating from oxidizer mol...\n");
+        (void)printf("\nInput moles of oxidizer: ");
+        (void)scanf("%f", &input);
+        (void)recalculateFromOxidizerMol(&main_reaction, input);
         break;
       case 5:
         (void)printf("Recalculating from target product mass...");

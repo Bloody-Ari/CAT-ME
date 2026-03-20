@@ -76,7 +76,7 @@ void recalculateFromFuelMol(struct ReactionData *main_reaction, float new_fuel_a
 
 void recalculateFromOxidizerMol(struct ReactionData *main_reaction, float new_oxidizer_ammount_mol){
   main_reaction->oxidizer_mol = new_oxidizer_ammount_mol;
-  main_reaction->oxidizer_volume = new_oxidizer_ammount_mol / main_reaction->oxidizer_molarity;
+  main_reaction->oxidizer_volume = new_oxidizer_ammount_mol / main_reaction->oxidizer_molarity * 1000;
 
   main_reaction->fuel_mol = new_oxidizer_ammount_mol * 1/3;
   main_reaction->fuel_g = main_reaction->fuel_mol * main_reaction->fuel_uma;
@@ -87,6 +87,7 @@ void recalculateFromOxidizerMol(struct ReactionData *main_reaction, float new_ox
 
 /*
  * Why??? I think it's more readable, I would probably add comments anyways
+ * not sure if I am even using them tho lol
  */
 float massToMol(float mass, float uma){
   return mass/uma;

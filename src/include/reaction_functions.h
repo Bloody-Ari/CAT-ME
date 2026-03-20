@@ -3,6 +3,8 @@ struct ReactionData createEmptyReactionStruct();
 void defineMainReactionData(struct ReactionData *main_reaction);
 
 void recalculateFromFuelMol(struct ReactionData *main_reaction, float new_fuel_ammount_mol);
+void recalculateFromOxidizerMol(struct ReactionData *main_reaction, float new_oxidizer_ammount_mol);
 
 float massToMol(float mass, float uma);
+float volumeToMol(float volume_L, float molarity_mol_over_L);
 float molToMass(float mol, float uma);
