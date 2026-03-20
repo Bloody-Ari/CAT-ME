@@ -65,12 +65,9 @@ void recalculateFromFuelMol(struct ReactionData *main_reaction, float new_fuel_a
 
   main_reaction->oxidizer_mol = (new_fuel_ammount_mol * 3);
   main_reaction->oxidizer_volume = (main_reaction->oxidizer_mol / main_reaction->oxidizer_molarity) * 1000; /* I want ml */
-  /*main_reaction->oxidizer_g = main_reaction->oxidizer_volume ;*/
 
   main_reaction->main_product_mol = main_reaction->oxidizer_mol / 2; /*2HCl mol = 1 H2 mol*/
   main_reaction->main_product_g = main_reaction->main_product_mol * main_reaction->main_product_uma;
-  main_reaction->main_product_volume = main_reaction->main_product_g / main_reaction->main_product_density_g_cm3;
-  /*(void)printf("\nTo react %5.2f mol of Aluminum you need %5.3f mol of HCl\n\n", new_fuel_ammount_mol, ammount_of_oxidizer_needed);*/
 }
 
 /*
