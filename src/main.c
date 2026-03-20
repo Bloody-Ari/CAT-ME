@@ -88,6 +88,10 @@ int main(){
         (void)printf("New oxidizer molarity: ");
         (void)scanf("%f", &input);
         main_reaction.oxidizer_molarity = input;
+        if (main_reaction.fuel_g > 0){
+          printf("%3.2f", main_reaction.fuel_mol);
+          recalculateFromFuelMol(&main_reaction, main_reaction.fuel_mol);
+        }
         break;
       default:
         /* I prefer to kill the program than to loop for now*/
