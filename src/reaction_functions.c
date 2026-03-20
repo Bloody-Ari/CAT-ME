@@ -57,6 +57,10 @@ void defineMainReactionData(struct ReactionData *main_reaction){
   main_reaction->of_ratio = 3;
 }
 
+/*
+ * Maybe I should add a recalculate product and use that here and for the OF recalculations?
+ */
+
 /* I am hardcoding it for now...*/
 void recalculateFromFuelMol(struct ReactionData *main_reaction, float new_fuel_ammount_mol){
   main_reaction->fuel_mol = new_fuel_ammount_mol;
@@ -70,11 +74,26 @@ void recalculateFromFuelMol(struct ReactionData *main_reaction, float new_fuel_a
   main_reaction->main_product_g = main_reaction->main_product_mol * main_reaction->main_product_uma;
 }
 
+void recalculateFromOxidizerMol(struct ReactionData *main_reaction, float new_oxidizer_ammount_mol){
+  main_reaction->oxidizer_mol = new_oxidizer_ammount_mol;
+  main_reaction->oxidizer_volume = new_oxidizer_ammount_mol / main_reaction->oxidizer_molarity;
+
+  main_reaction->fuel_mol = new_oxidizer_ammount_mol * 1/3;
+  main_reaction->fuel_g = main_reaction->fuel_mol * main_reaction->fuel_uma;
+
+  main_reaction->main_product_mol = main_reaction->oxidizer_mol / 2; /*2HCl mol = 1 H2 mol*/
+  main_reaction->main_product_g = main_reaction->main_product_mol * main_reaction->main_product_uma;
+}
+
 /*
  * Why??? I think it's more readable, I would probably add comments anyways
  */
 float massToMol(float mass, float uma){
   return mass/uma;
+}
+
+float volumeToMol(float volume_L, float molarity_mol_over_L){
+  return volume_L * molarity_mol_over_L;
 }
 
 float molToMass(float mol, float uma){
