@@ -36,7 +36,6 @@ int main(){
     (void)printf("║ Oxidizer volume:     %8.3f ml           ║\n", main_reaction.oxidizer_volume);
     (void)printf("╠════════════════════════════════════════════╣\n");
     (void)printf("║ Main Product mol:    %8.3f mol          ║\n", main_reaction.main_product_mol);
-    (void)printf("║ Main Product mass:   %8.3f g            ║\n", main_reaction.main_product_g);
     (void)printf("╠════════════════════════════════════════════╣\n");
     (void)printf("║ Fuel mol:            %8.3f mol          ║\n", main_reaction.fuel_mol);
     (void)printf("║ Oxidizer mol:        %8.3f mol          ║\n", main_reaction.oxidizer_mol);
@@ -47,10 +46,9 @@ int main(){
     (void)printf("2. Set oxidizer volume <-- implemented ✔\n");
     (void)printf("3. Set fuel mol <-- implemented ✔\n");
     (void)printf("4. Set oxidizer mol <-- implemented ✔\n");
-    (void)printf("5. Set target product mass ❌\n");
-    (void)printf("6. Set target product mol ❌\n");
-    (void)printf("7. Change OF ratio ❌\n");
-    (void)printf("8. Change Oxidizer Molarity <-- implemented ✔\n");
+    (void)printf("5. Set target product mol  <-- implemented ✔\n");
+    (void)printf("6. Change OF ratio ❌\n");
+    (void)printf("7. Change Oxidizer Molarity <-- implemented ✔\n");
     (void)printf("\n-1. Quit\n");
     (void)printf("(No sanitization, this will be a GUI later)\n");
 
@@ -83,15 +81,15 @@ int main(){
         (void)recalculateFromOxidizerMol(&main_reaction, input);
         break;
       case 5:
-        (void)printf("Recalculating from target product mass...");
+        (void)printf("\nInput target moles of main product: ");
+        (void)scanf("%f", &input);
+        input *= 2;
+        (void)recalculateFromOxidizerMol(&main_reaction, input);
         break;
       case 6:
-        (void)printf("Recalculating from target product mol...");
-        break;
-      case 7:
         (void)printf("Recalculating from OF ratio...");
         break;
-      case 8:
+      case 7:
         (void)printf("New oxidizer molarity: ");
         (void)scanf("%f", &input);
         main_reaction.oxidizer_molarity = input;
