@@ -48,13 +48,13 @@ int main(){
     (void)printf("╚════════════════════════════════════════════╝\n");
 
     (void)printf("\nWhat do you want to change?: \n");
-    (void)printf("1. Set fuel mass <-- implemented ✔\n");
-    (void)printf("2. Set oxidizer volume <-- implemented ✔\n");
-    (void)printf("3. Set fuel mol <-- implemented ✔\n");
-    (void)printf("4. Set oxidizer mol <-- implemented ✔\n");
-    (void)printf("5. Set target product mol  <-- implemented ✔\n");
-    (void)printf("6. Change OF ratio ❌\n");
-    (void)printf("7. Change Oxidizer Molarity <-- implemented ✔\n");
+    (void)printf("1. Set fuel mass\n");
+    (void)printf("2. Set oxidizer volume\n");
+    (void)printf("3. Set fuel mol\n");
+    (void)printf("4. Set oxidizer mol\n");
+    (void)printf("5. Set target product mol\n");
+    (void)printf("6. Change OF ratio\n");
+    (void)printf("7. Change Oxidizer Molarity\n");
     (void)printf("\n-1. Quit\n");
     (void)printf("(No sanitization, this will be a GUI later)\n");
 
