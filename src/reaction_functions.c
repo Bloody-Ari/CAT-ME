@@ -86,7 +86,7 @@ void recalculateFromOxidizerMol(struct ReactionData *main_reaction, float new_ox
   main_reaction->oxidizer_mol = new_oxidizer_ammount_mol;
   main_reaction->oxidizer_volume = new_oxidizer_ammount_mol / main_reaction->oxidizer_molarity * 1000;
 
-  main_reaction->fuel_mol = new_oxidizer_ammount_mol * 1/3;
+  main_reaction->fuel_mol = new_oxidizer_ammount_mol / main_reaction->of_ratio;
   main_reaction->fuel_g = main_reaction->fuel_mol * main_reaction->fuel_uma;
 
   main_reaction->main_product_mol = main_reaction->oxidizer_mol / 2; /*2HCl mol = 1 H2 mol*/
