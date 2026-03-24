@@ -75,7 +75,7 @@ void recalculateFromFuelMol(struct ReactionData *main_reaction, float new_fuel_a
   main_reaction->fuel_g = new_fuel_ammount_mol * main_reaction->fuel_uma;
   main_reaction->fuel_volume = main_reaction->fuel_g / main_reaction->fuel_density_g_cm3;
 
-  main_reaction->oxidizer_mol = (new_fuel_ammount_mol * main_reaction->oxidizer_ratio);
+  main_reaction->oxidizer_mol = (new_fuel_ammount_mol * main_reaction->of_ratio);
   main_reaction->oxidizer_volume = (main_reaction->oxidizer_mol / main_reaction->oxidizer_molarity) * 1000; /* I want ml */
 
   main_reaction->main_product_mol = main_reaction->oxidizer_mol / 2; /*2HCl mol = 1 H2 mol*/
