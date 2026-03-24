@@ -15,9 +15,11 @@ int main(){
   int choice = -1;
 
   struct ReactionData main_reaction = createEmptyReactionStruct();
+  struct DefaultReactionRatio default_reaction = {0,0,0};
 
   float input = 0; /* just to have something to play around with sanitization*/
 
+  (void)defineDefaultReactionData(&default_reaction);
   (void)defineMainReactionData(&main_reaction);
 
 
@@ -39,6 +41,10 @@ int main(){
     (void)printf("╠════════════════════════════════════════════╣\n");
     (void)printf("║ Fuel mol:            %8.3f mol          ║\n", main_reaction.fuel_mol);
     (void)printf("║ Oxidizer mol:        %8.3f mol          ║\n", main_reaction.oxidizer_mol);
+    (void)printf("╠════════════════════════════════════════════╣\n");
+    (void)printf("║ Fuel ratio:          %8.3f mol          ║\n", main_reaction.fuel_ratio);
+    (void)printf("║ Oxidizer ratio:      %8.3f mol          ║\n", main_reaction.oxidizer_ratio);
+    (void)printf("║ OF ratio:            %8.3f mol          ║\n", main_reaction.of_ratio);
     (void)printf("╚════════════════════════════════════════════╝\n");
 
     (void)printf("\nWhat do you want to change?: \n");
@@ -87,14 +93,16 @@ int main(){
         (void)recalculateFromOxidizerMol(&main_reaction, input);
         break;
       case 6:
-        (void)printf("Recalculating from OF ratio...");
+        (void)printf("New OF ratio: ");
+        (void)scanf("%f", &input);
+        (void)recalculateOFRatio(&main_reaction, &default_reaction, input);
+        (void)recalculateFromFuelMol(&main_reaction, main_reaction.fuel_mol);
         break;
       case 7:
         (void)printf("New oxidizer molarity: ");
         (void)scanf("%f", &input);
         main_reaction.oxidizer_molarity = input;
         if (main_reaction.fuel_g > 0){
-          printf("%3.2f", main_reaction.fuel_mol);
           recalculateFromFuelMol(&main_reaction, main_reaction.fuel_mol);
         }
         break;

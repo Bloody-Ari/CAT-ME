@@ -14,12 +14,14 @@ struct ReactionData createEmptyReactionStruct(){
   empty_reaction_data.fuel_uma = 0; /* g/mol */
   empty_reaction_data.fuel_molarity = 0; /* M = m/L, for liquids! */
   empty_reaction_data.fuel_density_g_cm3 = 0; /* *1000 for kg/m^3 haha */
+  empty_reaction_data.fuel_ratio = 0;
   empty_reaction_data.oxidizer_g = 0;
   empty_reaction_data.oxidizer_volume = 0;
   empty_reaction_data.oxidizer_mol = 0;
   empty_reaction_data.oxidizer_uma = 0;
   empty_reaction_data.oxidizer_molarity = 0;
   empty_reaction_data.oxidizer_density_g_cm3 = 0;
+  empty_reaction_data.oxidizer_ratio = 0;
 
   empty_reaction_data.fuel_residue_mol = 0;
   empty_reaction_data.fuel_residue_g = 0;
@@ -44,17 +46,23 @@ struct ReactionData createEmptyReactionStruct(){
  * 2. It makes much more sense to just read a .txt file than to hard code :3
  */
 void defineMainReactionData(struct ReactionData *main_reaction){
-  main_reaction->fuel_mol = 2;
+  main_reaction->fuel_ratio = 2;
   main_reaction->fuel_uma = 26.98;
   main_reaction->fuel_density_g_cm3 = 2.7;
 
-  main_reaction->oxidizer_mol = 6;
+  main_reaction->oxidizer_ratio = 6;
   main_reaction->oxidizer_uma = 36.46;
   main_reaction->oxidizer_molarity =7.6;
   main_reaction->oxidizer_density_g_cm3 = 1.01; /* depends on concentration */
 
   main_reaction->main_product_uma = 1.008;
   main_reaction->of_ratio = 3;
+}
+
+void defineDefaultReactionData(struct DefaultReactionRatio *default_reaction){
+  default_reaction->fuel_mol = 2;
+  default_reaction->oxidizer_mol = 6;
+  default_reaction->of_ratio = default_reaction->oxidizer_mol / default_reaction->fuel_mol;
 }
 
 /*
@@ -67,7 +75,7 @@ void recalculateFromFuelMol(struct ReactionData *main_reaction, float new_fuel_a
   main_reaction->fuel_g = new_fuel_ammount_mol * main_reaction->fuel_uma;
   main_reaction->fuel_volume = main_reaction->fuel_g / main_reaction->fuel_density_g_cm3;
 
-  main_reaction->oxidizer_mol = (new_fuel_ammount_mol * 3);
+  main_reaction->oxidizer_mol = (new_fuel_ammount_mol * main_reaction->oxidizer_ratio);
   main_reaction->oxidizer_volume = (main_reaction->oxidizer_mol / main_reaction->oxidizer_molarity) * 1000; /* I want ml */
 
   main_reaction->main_product_mol = main_reaction->oxidizer_mol / 2; /*2HCl mol = 1 H2 mol*/
@@ -83,6 +91,24 @@ void recalculateFromOxidizerMol(struct ReactionData *main_reaction, float new_ox
 
   main_reaction->main_product_mol = main_reaction->oxidizer_mol / 2; /*2HCl mol = 1 H2 mol*/
   main_reaction->main_product_g = main_reaction->main_product_mol * main_reaction->main_product_uma;
+}
+
+void recalculateOFRatio(struct ReactionData *main_reaction, struct DefaultReactionRatio *default_reaction, float new_of_ratio){
+  main_reaction->of_ratio = new_of_ratio;
+
+  if(new_of_ratio > default_reaction->of_ratio){
+    main_reaction->oxidizer_ratio = new_of_ratio * default_reaction->fuel_mol;
+    main_reaction->fuel_ratio = default_reaction->fuel_mol;
+  }
+  if(new_of_ratio < default_reaction->of_ratio){
+    main_reaction->fuel_ratio = default_reaction->oxidizer_mol / new_of_ratio;
+    main_reaction->oxidizer_ratio = default_reaction->oxidizer_mol;
+  }
+  if(new_of_ratio == default_reaction->of_ratio){
+    main_reaction->of_ratio = default_reaction->of_ratio;
+    main_reaction->fuel_ratio = default_reaction->fuel_mol;
+    main_reaction->oxidizer_ratio = default_reaction->oxidizer_mol;
+  }
 }
 
 /*

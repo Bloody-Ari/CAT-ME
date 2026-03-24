@@ -5,12 +5,14 @@ struct ReactionData {
   float fuel_molarity; /* M = m/L, for liquids! */
   float fuel_density_g_cm3; /* *1000 for kg/m^3 haha */
   float fuel_volume; /* g/cm^3 or mL */
+  float fuel_ratio;
   float oxidizer_g;
   float oxidizer_volume; 
   float oxidizer_mol;
   float oxidizer_uma;
   float oxidizer_molarity;
   float oxidizer_density_g_cm3;
+  float oxidizer_ratio;
 
   float fuel_residue_mol;
   float fuel_residue_g;
@@ -26,4 +28,9 @@ struct ReactionData {
   float of_ratio;
 };
 
+struct DefaultReactionRatio {
+  float fuel_mol;
+  float oxidizer_mol;
+  float of_ratio;
+};
 /* I should make the defualt reaction data a read from a file */
