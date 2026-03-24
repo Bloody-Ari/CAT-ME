@@ -84,7 +84,7 @@ void recalculateFromFuelMol(struct ReactionData *main_reaction, float new_fuel_a
 
 void recalculateFromOxidizerMol(struct ReactionData *main_reaction, float new_oxidizer_ammount_mol){
   main_reaction->oxidizer_mol = new_oxidizer_ammount_mol;
-  main_reaction->oxidizer_volume = new_oxidizer_ammount_mol / main_reaction->oxidizer_molarity * 1000;
+  main_reaction->oxidizer_volume = (main_reaction->oxidizer_mol / main_reaction->oxidizer_molarity) * 1000;
 
   main_reaction->fuel_mol = new_oxidizer_ammount_mol / main_reaction->of_ratio;
   main_reaction->fuel_g = main_reaction->fuel_mol * main_reaction->fuel_uma;
