@@ -9,9 +9,9 @@ For instance, the file structure is layed out but not fully in use, so you may s
 
 # Current Scope 🔍
 
-- [ ] Stoichiometric calculation of a chemical reaction involving 2 reactants and 2 products.
-- [ ] Recalculation of said reaction with a specific OF ratio.
-- [ ] Recalulation of the reaction based on *any* value as input with real-time updates.
+- [x] Stoichiometric calculation of a chemical reaction involving 2 reactants and 2 products.
+- [x] Recalculation of said reaction with a specific OF ratio.
+- [x] Recalulation of the reaction based on *any* value as input with real-time updates.
 - [ ] Calculation of the same reaction multiple times (mostly for tests).
 - [ ] CSV output.
 
