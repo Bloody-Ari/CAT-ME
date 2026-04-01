@@ -18,7 +18,6 @@ int main(){
   struct DefaultReactionRatio default_reaction = {0,0,0};
 
   float input = 0; /* just to have something to play around with sanitization*/
-
   (void)defineDefaultReactionData(&default_reaction);
   (void)defineMainReactionData(&main_reaction);
 
@@ -96,7 +95,7 @@ int main(){
         (void)printf("New OF ratio: ");
         (void)scanf("%f", &input);
         (void)recalculateOFRatio(&main_reaction, &default_reaction, input);
-        (void)recalculateFromFuelMol(&main_reaction, main_reaction.fuel_mol);
+        (void)recalculateFromOxidizerMol(&main_reaction, main_reaction.oxidizer_mol);
         break;
       case 7:
         (void)printf("New oxidizer molarity: ");
