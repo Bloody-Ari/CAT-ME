@@ -83,48 +83,55 @@ int main(){
 
     switch(choice){
       case -1:
-        return 0; /* just quits haha */
+        return 0;
       case 1:
         (void)printf("\nInput grams of fuel: ");
         (void)scanf("%f", &temp_input); 
         temp_input /= main_reaction.fuel_uma;
         (void)recalculateFromFuelMol(&main_reaction, temp_input);
+        printf("Calculating pressure\n");
         (void)chamberPressureFromMol(&main_rocket, main_reaction.main_product_mol);
         break;
       case 2:
         (void)printf("\nInput ml of oxidizer: ");
         (void)scanf("%f", &temp_input);
         temp_input *= main_reaction.oxidizer_molarity / 1000;
-        recalculateFromOxidizerMol(&main_reaction,  temp_input);
+        (void)recalculateFromOxidizerMol(&main_reaction,  temp_input);
+        (void)chamberPressureFromMol(&main_rocket, main_reaction.main_product_mol);
         break;
       case 3:
         (void)printf("\nInput moles of fuel: ");
         (void)scanf("%f", &temp_input);
         (void)recalculateFromFuelMol(&main_reaction, temp_input);
+        (void)chamberPressureFromMol(&main_rocket, main_reaction.main_product_mol);
         break;
       case 4:
         (void)printf("\nInput moles of oxidizer: ");
         (void)scanf("%f", &temp_input);
         (void)recalculateFromOxidizerMol(&main_reaction, temp_input);
+        (void)chamberPressureFromMol(&main_rocket, main_reaction.main_product_mol);
         break;
       case 5:
         (void)printf("\nInput target moles of main product: ");
         (void)scanf("%f", &temp_input);
         temp_input *= 2;
         (void)recalculateFromOxidizerMol(&main_reaction, temp_input);
+        (void)chamberPressureFromMol(&main_rocket, main_reaction.main_product_mol);
         break;
       case 6:
         (void)printf("New OF ratio: ");
         (void)scanf("%f", &temp_input);
         (void)recalculateOFRatio(&main_reaction, &default_reaction, temp_input);
         (void)recalculateFromOxidizerMol(&main_reaction, main_reaction.oxidizer_mol);
+        (void)chamberPressureFromMol(&main_rocket, main_reaction.main_product_mol);
         break;
       case 7:
         (void)printf("New oxidizer molarity: ");
         (void)scanf("%f", &temp_input);
         main_reaction.oxidizer_molarity = temp_input;
         if (main_reaction.fuel_g > 0){
-          recalculateFromFuelMol(&main_reaction, main_reaction.fuel_mol);
+          (void)recalculateFromFuelMol(&main_reaction, main_reaction.fuel_mol);
+          (void)chamberPressureFromMol(&main_rocket, main_reaction.main_product_mol);
         }
         break;
       case 8:
@@ -132,14 +139,14 @@ int main(){
         (void)scanf("%f", &temp_input);
         main_rocket.chamber_pressure_atm = temp_input;
         main_rocket.chamber_pressure_pa = ATM_TO_PA(temp_input);
-        recalculateFromOxidizerMol(&main_reaction, molFromChamberPressureAndVolume(&main_rocket));
+        (void)recalculateFromOxidizerMol(&main_reaction, molFromChamberPressureAndVolume(&main_rocket)*2);
         break;
       case 9:
         (void)printf("Target chamber pressure (Pa): ");
         (void)scanf("%f", &temp_input);
         main_rocket.chamber_pressure_pa = temp_input;
         main_rocket.chamber_pressure_atm = PA_TO_ATM(temp_input);
-        recalculateFromOxidizerMol(&main_reaction, molFromChamberPressureAndVolume(&main_rocket));
+        (void)recalculateFromOxidizerMol(&main_reaction, molFromChamberPressureAndVolume(&main_rocket)*2);
         break;
       default:
         /* I prefer to kill the program than to loop for now*/
