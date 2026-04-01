@@ -2,27 +2,42 @@
   #include "include/rocket_types.h"
 #endif
 
-struct RocketData createDefaultRocketData(){
+struct RocketData createEmptyRocketData(){
   struct RocketData empty_rocket_data;
-  empty_rocket_data.ac_at = 2.0;
+  empty_rocket_data.ac_at = 0;
   empty_rocket_data.at_ae = 0;
   empty_rocket_data.chamber_pressure_atm = 0;
   empty_rocket_data.chamber_pressure_pa = 0;
-  /*
-   * ye it's not exactly 1500mL but heh, later,
-   * it should be an input anyways
-   */
-  empty_rocket_data.chamber_volume_mL = 600;
-  empty_rocket_data.chamber_area_m2 = 0.127718352;
+  empty_rocket_data.chamber_volume_L = 0;
+  empty_rocket_data.chamber_area_m2 = 0;
+  empty_rocket_data.chamber_temperature_K = 0;
   empty_rocket_data.c_star = 0;
 
   return empty_rocket_data;
 }
 
-float chamberPressureFromMolAndVolume(float species_mol, float volume_L, float temp_k){
-  return (species_mol * R_IN_LITERS * temp_k) / volume_L;
+void defineDefaultRocketData(struct RocketData *rocket_data){
+  rocket_data->ac_at = 2.0;
+  rocket_data->at_ae = 0;
+  rocket_data->chamber_pressure_atm = 0;
+  rocket_data->chamber_pressure_pa = 0;
+  /*
+   * ye it's not exactly 1500mL but heh, later,
+   * it should be an input anyways
+   */
+  rocket_data->chamber_volume_L = 0.600;
+  rocket_data->chamber_area_m2 = 0.127718352;
+  rocket_data->c_star = 0;
+
+  return;
 }
 
-float molFromChamberPressureAndVolume(float pressure_pa, float volume_L, float temp_k){
-  return (pressure_pa * volume_L)/(R_IN_LITERS * temp_k);
+void chamberPressureFromMol(struct RocketData *rocket_data, float species_mol){
+  rocket_data->chamber_pressure_pa = (species_mol * R_IN_LITERS * rocket_data->chamber_temperature_K) / rocket_data->chamber_volume_L;
+  rocket_data->chamber_pressure_atm = PA_TO_ATM(rocket_data->chamber_pressure_pa);
+  return;
+}
+
+float molFromChamberPressureAndVolume(struct RocketData *rocket_data){
+  return (rocket_data->chamber_pressure_pa * rocket_data->chamber_volume_L)/(R_IN_LITERS * rocket_data->chamber_temperature_K);
 }

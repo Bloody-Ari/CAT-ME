@@ -17,7 +17,7 @@ int main(){
   int choice = -1;
 
   struct ReactionData main_reaction = createEmptyReactionStruct();
-  struct RocketData main_rocket_data = createDefaultRocketData();
+  struct RocketData main_rocket = createEmptyRocketData();
   struct DefaultReactionRatio default_reaction = {0,0,0};
 
   float temp_input = 0;
@@ -27,6 +27,7 @@ int main(){
 
   (void)defineDefaultReactionData(&default_reaction);
   (void)defineMainReactionData(&main_reaction);
+  (void)defineDefaultRocketData(&main_rocket);
 
 
   /* Main menu!!! Should convert it to a function 
@@ -56,11 +57,11 @@ int main(){
     (void)printf("╠════════════════════════════════════════════════╣\n");
     (void)printf("║                  Rocket data:                  ║\n");
     (void)printf("╠════════════════════════════════════════════════╣\n");
-    (void)printf("║ Chamber pressure:    %12.3f Pa           ║\n", main_rocket_data.chamber_pressure_pa);
-    (void)printf("║ Chamber pressure:    %12.3f atm          ║\n", main_rocket_data.chamber_pressure_atm);
-    (void)printf("║ Chamber volume:      %12.3f mL           ║\n", main_rocket_data.chamber_volume_mL);
-    (void)printf("║ Ac/At:               %12.3f              ║\n", main_rocket_data.ac_at);
-    (void)printf("║ At/Ae:               %12.3f              ║\n", main_rocket_data.at_ae);
+    (void)printf("║ Chamber pressure:    %12.3f Pa           ║\n", main_rocket.chamber_pressure_pa);
+    (void)printf("║ Chamber pressure:    %12.3f atm          ║\n", main_rocket.chamber_pressure_atm);
+    (void)printf("║ Chamber volume:      %12.3f mL           ║\n", main_rocket.chamber_volume_L*1000);
+    (void)printf("║ Ac/At:               %12.3f              ║\n", main_rocket.ac_at);
+    (void)printf("║ At/Ae:               %12.3f              ║\n", main_rocket.at_ae);
     (void)printf("╚════════════════════════════════════════════════╝\n");
 
     (void)printf("\nWhat do you want to change?: \n");
@@ -71,8 +72,8 @@ int main(){
     (void)printf("5. Set target product mol\n");
     (void)printf("6. Change OF ratio\n");
     (void)printf("7. Change Oxidizer Molarity\n");
-    (void)printf("8. Set target chamber pressure (atm) <-- not implemented\n");
-    (void)printf("9. Set target chamber pressure (Pa)  <-- not implemented\n");
+    (void)printf("8. Set target chamber pressure (atm)\n");
+    (void)printf("9. Set target chamber pressure (Pa)\n");
     /*(void)printf("9. Set chamber to throat area ratio\n");*/
     (void)printf("\n-1. Quit\n");
     (void)printf("(No sanitization, this will be a GUI later)\n");
@@ -88,6 +89,7 @@ int main(){
         (void)scanf("%f", &temp_input); 
         temp_input /= main_reaction.fuel_uma;
         (void)recalculateFromFuelMol(&main_reaction, temp_input);
+        (void)chamberPressureFromMol(&main_rocket, main_reaction.main_product_mol);
         break;
       case 2:
         (void)printf("\nInput ml of oxidizer: ");
@@ -128,16 +130,16 @@ int main(){
       case 8:
         (void)printf("Target chamber pressure (atm): ");
         (void)scanf("%f", &temp_input);
-        main_rocket_data.chamber_pressure_atm = temp_input;
-        main_rocket_data.chamber_pressure_pa = ATM_TO_PA(temp_input);
-        recalculateFromOxidizerMol(&main_reaction, molFromChamberPressureAndVolume(main_rocket_data.chamber_pressure_pa, main_rocket_data.chamber_volume_mL/1000, AMBIENT_TEMP_K)*2);
+        main_rocket.chamber_pressure_atm = temp_input;
+        main_rocket.chamber_pressure_pa = ATM_TO_PA(temp_input);
+        recalculateFromOxidizerMol(&main_reaction, molFromChamberPressureAndVolume(&main_rocket));
         break;
       case 9:
         (void)printf("Target chamber pressure (Pa): ");
         (void)scanf("%f", &temp_input);
-        main_rocket_data.chamber_pressure_pa = temp_input;
-        main_rocket_data.chamber_pressure_atm = PA_TO_ATM(temp_input);
-        recalculateFromOxidizerMol(&main_reaction, molFromChamberPressureAndVolume(main_rocket_data.chamber_pressure_pa, main_rocket_data.chamber_volume_mL/1000, AMBIENT_TEMP_K)*2);
+        main_rocket.chamber_pressure_pa = temp_input;
+        main_rocket.chamber_pressure_atm = PA_TO_ATM(temp_input);
+        recalculateFromOxidizerMol(&main_reaction, molFromChamberPressureAndVolume(&main_rocket));
         break;
       default:
         /* I prefer to kill the program than to loop for now*/

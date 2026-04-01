@@ -1,3 +1,5 @@
-float chamberPressureFromMolAndVolume(float species_mol, float volume_L, float temp_k);
-float molFromChamberPressureAndVolume(float pressure_pa, float volume_L, float temp_k);
-struct RocketData createDefaultRocketData();
+struct RocketData createEmptyRocketData();
+void defineDefaultRocketData(struct RocketData *rocket_data);
+
+void chamberPressureFromMol(struct RocketData *rocket_data, float species_mol);
+float molFromChamberPressureAndVolume(struct RocketData *rocket_data);
