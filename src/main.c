@@ -11,13 +11,15 @@
 
 int main(){
   /* defines the stoichiometric ratio of the reaction */
-  /*char mol_input[10];*/
+  /*char mol_temp_input[10];*/
   int choice = -1;
 
   struct ReactionData main_reaction = createEmptyReactionStruct();
   struct DefaultReactionRatio default_reaction = {0,0,0};
 
-  float input = 0; /* just to have something to play around with sanitization*/
+  float temp_input = 0;
+
+
   (void)defineDefaultReactionData(&default_reaction);
   (void)defineMainReactionData(&main_reaction);
 
@@ -54,6 +56,8 @@ int main(){
     (void)printf("5. Set target product mol\n");
     (void)printf("6. Change OF ratio\n");
     (void)printf("7. Change Oxidizer Molarity\n");
+    (void)printf("8. Set target chamber pressure\n");
+    (void)printf("9. Set ac_at\n");
     (void)printf("\n-1. Quit\n");
     (void)printf("(No sanitization, this will be a GUI later)\n");
 
@@ -65,42 +69,42 @@ int main(){
         return 0; /* just quits haha */
       case 1:
         (void)printf("\nInput grams of fuel: ");
-        (void)scanf("%f", &input); 
-        input /= main_reaction.fuel_uma;
-        (void)recalculateFromFuelMol(&main_reaction, input);
+        (void)scanf("%f", &temp_input); 
+        temp_input /= main_reaction.fuel_uma;
+        (void)recalculateFromFuelMol(&main_reaction, temp_input);
         break;
       case 2:
         (void)printf("\nInput ml of oxidizer: ");
-        (void)scanf("%f", &input);
-        input *= main_reaction.oxidizer_molarity / 1000;
-        recalculateFromOxidizerMol(&main_reaction,  input);
+        (void)scanf("%f", &temp_input);
+        temp_input *= main_reaction.oxidizer_molarity / 1000;
+        recalculateFromOxidizerMol(&main_reaction,  temp_input);
         break;
       case 3:
         (void)printf("\nInput moles of fuel: ");
-        (void)scanf("%f", &input);
-        (void)recalculateFromFuelMol(&main_reaction, input);
+        (void)scanf("%f", &temp_input);
+        (void)recalculateFromFuelMol(&main_reaction, temp_input);
         break;
       case 4:
         (void)printf("\nInput moles of oxidizer: ");
-        (void)scanf("%f", &input);
-        (void)recalculateFromOxidizerMol(&main_reaction, input);
+        (void)scanf("%f", &temp_input);
+        (void)recalculateFromOxidizerMol(&main_reaction, temp_input);
         break;
       case 5:
         (void)printf("\nInput target moles of main product: ");
-        (void)scanf("%f", &input);
-        input *= 2;
-        (void)recalculateFromOxidizerMol(&main_reaction, input);
+        (void)scanf("%f", &temp_input);
+        temp_input *= 2;
+        (void)recalculateFromOxidizerMol(&main_reaction, temp_input);
         break;
       case 6:
         (void)printf("New OF ratio: ");
-        (void)scanf("%f", &input);
-        (void)recalculateOFRatio(&main_reaction, &default_reaction, input);
+        (void)scanf("%f", &temp_input);
+        (void)recalculateOFRatio(&main_reaction, &default_reaction, temp_input);
         (void)recalculateFromOxidizerMol(&main_reaction, main_reaction.oxidizer_mol);
         break;
       case 7:
         (void)printf("New oxidizer molarity: ");
-        (void)scanf("%f", &input);
-        main_reaction.oxidizer_molarity = input;
+        (void)scanf("%f", &temp_input);
+        main_reaction.oxidizer_molarity = temp_input;
         if (main_reaction.fuel_g > 0){
           recalculateFromFuelMol(&main_reaction, main_reaction.fuel_mol);
         }
