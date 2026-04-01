@@ -8,6 +8,8 @@
 
 #include "include/reaction_types.h"
 #include "include/reaction_functions.h"
+#include "include/rocket_types.h"
+#include "include/rocket_functions.h"
 
 int main(){
   /* defines the stoichiometric ratio of the reaction */
@@ -15,10 +17,13 @@ int main(){
   int choice = -1;
 
   struct ReactionData main_reaction = createEmptyReactionStruct();
+  struct RocketData main_rocket_data = createDefaultRocketData();
   struct DefaultReactionRatio default_reaction = {0,0,0};
 
   float temp_input = 0;
-
+  /*
+  float chamber_to_throat_area_ratio = 2.0;
+  */
 
   (void)defineDefaultReactionData(&default_reaction);
   (void)defineMainReactionData(&main_reaction);
@@ -30,23 +35,33 @@ int main(){
    * exiting the program haha
   */
   while(1){
-    (void)printf("╔════════════════════════════════════════════╗\n");
-    (void)printf("║                Current data:               ║\n");
-    (void)printf("╠════════════════════════════════════════════╣\n");
-    (void)printf("║ Oxidizer M:          %8.3f M            ║\n", main_reaction.oxidizer_molarity);
-    (void)printf("╠════════════════════════════════════════════╣\n");
-    (void)printf("║ Fuel mass:           %8.3f g            ║\n", main_reaction.fuel_g);
-    (void)printf("║ Oxidizer volume:     %8.3f ml           ║\n", main_reaction.oxidizer_volume);
-    (void)printf("╠════════════════════════════════════════════╣\n");
-    (void)printf("║ Main Product mol:    %8.3f mol          ║\n", main_reaction.main_product_mol);
-    (void)printf("╠════════════════════════════════════════════╣\n");
-    (void)printf("║ Fuel mol:            %8.3f mol          ║\n", main_reaction.fuel_mol);
-    (void)printf("║ Oxidizer mol:        %8.3f mol          ║\n", main_reaction.oxidizer_mol);
-    (void)printf("╠════════════════════════════════════════════╣\n");
-    (void)printf("║ Fuel ratio:          %8.3f mol          ║\n", main_reaction.fuel_ratio);
-    (void)printf("║ Oxidizer ratio:      %8.3f mol          ║\n", main_reaction.oxidizer_ratio);
-    (void)printf("║ OF ratio:            %8.3f mol          ║\n", main_reaction.of_ratio);
-    (void)printf("╚════════════════════════════════════════════╝\n");
+    (void)printf("╔════════════════════════════════════════════════╗\n");
+    (void)printf("║                  Current data:                 ║\n");
+    (void)printf("╠════════════════════════════════════════════════╣\n");
+    (void)printf("║                  Reaction data:                ║\n");
+    (void)printf("╠════════════════════════════════════════════════╣\n");
+    (void)printf("║ Oxidizer M:          %12.3f M            ║\n", main_reaction.oxidizer_molarity);
+    (void)printf("╠════════════════════════════════════════════════╣\n");
+    (void)printf("║ Fuel mass:           %12.3f g            ║\n", main_reaction.fuel_g);
+    (void)printf("║ Oxidizer volume:     %12.3f ml           ║\n", main_reaction.oxidizer_volume);
+    (void)printf("╠════════════════════════════════════════════════╣\n");
+    (void)printf("║ Main Product mol:    %12.3f mol          ║\n", main_reaction.main_product_mol);
+    (void)printf("╠════════════════════════════════════════════════╣\n");
+    (void)printf("║ Fuel mol:            %12.3f mol          ║\n", main_reaction.fuel_mol);
+    (void)printf("║ Oxidizer mol:        %12.3f mol          ║\n", main_reaction.oxidizer_mol);
+    (void)printf("╠════════════════════════════════════════════════╣\n");
+    (void)printf("║ Fuel ratio:          %12.3f mol          ║\n", main_reaction.fuel_ratio);
+    (void)printf("║ Oxidizer ratio:      %12.3f mol          ║\n", main_reaction.oxidizer_ratio);
+    (void)printf("║ OF ratio:            %12.3f mol          ║\n", main_reaction.of_ratio);
+    (void)printf("╠════════════════════════════════════════════════╣\n");
+    (void)printf("║                  Rocket data:                  ║\n");
+    (void)printf("╠════════════════════════════════════════════════╣\n");
+    (void)printf("║ Chamber pressure:    %12.3f Pa           ║\n", main_rocket_data.chamber_pressure_pa);
+    (void)printf("║ Chamber pressure:    %12.3f atm          ║\n", main_rocket_data.chamber_pressure_atm);
+    (void)printf("║ Chamber volume:      %12.3f mL           ║\n", main_rocket_data.chamber_volume_mL);
+    (void)printf("║ Ac/At:               %12.3f              ║\n", main_rocket_data.ac_at);
+    (void)printf("║ At/Ae:               %12.3f              ║\n", main_rocket_data.at_ae);
+    (void)printf("╚════════════════════════════════════════════════╝\n");
 
     (void)printf("\nWhat do you want to change?: \n");
     (void)printf("1. Set fuel mass\n");
@@ -56,8 +71,9 @@ int main(){
     (void)printf("5. Set target product mol\n");
     (void)printf("6. Change OF ratio\n");
     (void)printf("7. Change Oxidizer Molarity\n");
-    (void)printf("8. Set target chamber pressure\n");
-    (void)printf("9. Set ac_at\n");
+    (void)printf("8. Set target chamber pressure (atm) <-- not implemented\n");
+    (void)printf("9. Set target chamber pressure (Pa)  <-- not implemented\n");
+    /*(void)printf("9. Set chamber to throat area ratio\n");*/
     (void)printf("\n-1. Quit\n");
     (void)printf("(No sanitization, this will be a GUI later)\n");
 
@@ -108,6 +124,20 @@ int main(){
         if (main_reaction.fuel_g > 0){
           recalculateFromFuelMol(&main_reaction, main_reaction.fuel_mol);
         }
+        break;
+      case 8:
+        (void)printf("Target chamber pressure (atm): ");
+        (void)scanf("%f", &temp_input);
+        main_rocket_data.chamber_pressure_atm = temp_input;
+        main_rocket_data.chamber_pressure_pa = ATM_TO_PA(temp_input);
+        recalculateFromOxidizerMol(&main_reaction, molFromChamberPressureAndVolume(main_rocket_data.chamber_pressure_pa, main_rocket_data.chamber_volume_mL/1000, AMBIENT_TEMP_K)*2);
+        break;
+      case 9:
+        (void)printf("Target chamber pressure (Pa): ");
+        (void)scanf("%f", &temp_input);
+        main_rocket_data.chamber_pressure_pa = temp_input;
+        main_rocket_data.chamber_pressure_atm = PA_TO_ATM(temp_input);
+        recalculateFromOxidizerMol(&main_reaction, molFromChamberPressureAndVolume(main_rocket_data.chamber_pressure_pa, main_rocket_data.chamber_volume_mL/1000, AMBIENT_TEMP_K)*2);
         break;
       default:
         /* I prefer to kill the program than to loop for now*/

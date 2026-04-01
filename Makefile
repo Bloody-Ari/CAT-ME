@@ -30,13 +30,15 @@ CPPFLAGS := -MMD
 SRC_DIR := src
 SRCS := \
 				main.c \
-				reaction_functions.c
+				reaction_functions.c \
+				rocket_functions.c
 SRCS := $(SRCS:%=$(SRC_DIR)/%)
 
 BUILD_DIR := build
 OBJS := \
 				main.o \
-				reaction_functions.o
+				reaction_functions.o \
+				rocket_functions.o
 OBJS := $(SRCS:$(SRC_DIR)/%.c=$(BUILD_DIR)/%.o)
 
 TARGET_DIR := bin
