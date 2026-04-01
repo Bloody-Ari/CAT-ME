@@ -14,9 +14,12 @@ struct RocketData{
   float chamber_pressure_atm; /* kind of just for show */
   float chamber_pressure_pa;
   float chamber_volume_L;
-  float chamber_area_m2;
   float chamber_temperature_K;
+  float chamber_area_m2;
+  float chamber_diameter_m;
   float throat_area_m2;
-  float throat_diameter_m2;
+  float throat_diameter_m;
+  float exit_diameter_m;
+  float exit_area_m2;
   float c_star;
 };
