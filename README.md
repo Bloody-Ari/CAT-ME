@@ -49,7 +49,7 @@ bin/cat-me
 
 `bin/cat-me`
 
-Will prompt you a "table" with your current data and several numbered options to choose from. You enter the number of what you want to change (ie. 1 for fuel mass) and then the new value. You don't need to input the measures and there is no sanitization so, if you input a negative number or a letter instead of one, it's undefined behaviour.
+Will prompt you a "table" with your current data and several numbered options to choose from. You enter the number of what you want to change (ie. 1 for fuel mass) and then the new value. You don't need to input the dimensions and there is no sanitization so, if you input a negative number or a letter instead of one, it's undefined behaviour.
 
 If you are a bit unsure about how to use it, try this: To calculate how much aluminum you would need to react 54 ml of HCl you would choose 2 and input 54. That will give you the inforation but... you use 6.4 Mol HCl not the default, so you can choose 7 and input 6.4 which will recalculate everything! And while you are at it, why don't you change the OF ratio from 3 (stoichiometric) to 1.2 and, BAM! everything is recalculated again.
 It may feel a bit unnatural but *for now* it's a CLI tool...
