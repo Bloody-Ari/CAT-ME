@@ -37,7 +37,7 @@ int main(){
   */
   while(1){
     (void)printf("╔════════════════════════════════════════════════╗\n");
-    (void)printf("║                  Current data:                 ║\n");
+    (void)printf("║                  Current data                  ║\n");
     (void)printf("╠════════════════════════════════════════════════╣\n");
     (void)printf("║                  Reaction data:                ║\n");
     (void)printf("╠════════════════════════════════════════════════╣\n");
@@ -60,6 +60,18 @@ int main(){
     (void)printf("║ Chamber pressure:    %12.3f Pa           ║\n", main_rocket.chamber_pressure_pa);
     (void)printf("║ Chamber pressure:    %12.3f atm          ║\n", main_rocket.chamber_pressure_atm);
     (void)printf("║ Chamber volume:      %12.3f mL           ║\n", main_rocket.chamber_volume_L*1000);
+    (void)printf("╠════════════════════════════════════════════════╣\n");
+    (void)printf("║                  Rocket measures:              ║\n");
+    (void)printf("╠════════════════════════════════════════════════╣\n");
+    (void)printf("║ Chamber diameter:    %12.3f mm           ║\n", main_rocket.chamber_pressure_pa);
+    (void)printf("║ Chamber area:        %12.3f m²           ║\n", main_rocket.chamber_pressure_pa);
+    (void)printf("║ Throat diameter:     %12.3f mm           ║\n", main_rocket.chamber_pressure_pa);
+    (void)printf("║ Throat area:         %12.3f m²           ║\n", main_rocket.chamber_pressure_pa);
+    (void)printf("║ Exit diameter:       %12.3f mm           ║\n", main_rocket.chamber_pressure_pa);
+    (void)printf("║ Exit area:           %12.3f m²           ║\n", main_rocket.chamber_pressure_pa);
+    (void)printf("╠════════════════════════════════════════════════╣\n");
+    (void)printf("║                  Rocket ratios:                ║\n");
+    (void)printf("╠════════════════════════════════════════════════╣\n");
     (void)printf("║ Ac/At:               %12.3f              ║\n", main_rocket.ac_at);
     (void)printf("║ At/Ae:               %12.3f              ║\n", main_rocket.at_ae);
     (void)printf("╚════════════════════════════════════════════════╝\n");
