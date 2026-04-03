@@ -63,12 +63,12 @@ int main(){
     (void)printf("╠════════════════════════════════════════════════╣\n");
     (void)printf("║                  Rocket measures:              ║\n");
     (void)printf("╠════════════════════════════════════════════════╣\n");
-    (void)printf("║ Chamber diameter:    %12.3f mm           ║\n", main_rocket.chamber_pressure_pa);
-    (void)printf("║ Chamber area:        %12.3f m²           ║\n", main_rocket.chamber_pressure_pa);
-    (void)printf("║ Throat diameter:     %12.3f mm           ║\n", main_rocket.chamber_pressure_pa);
-    (void)printf("║ Throat area:         %12.3f m²           ║\n", main_rocket.chamber_pressure_pa);
-    (void)printf("║ Exit diameter:       %12.3f mm           ║\n", main_rocket.chamber_pressure_pa);
-    (void)printf("║ Exit area:           %12.3f m²           ║\n", main_rocket.chamber_pressure_pa);
+    (void)printf("║ Chamber diameter:    %12.3f mm           ║\n", main_rocket.chamber_diameter_m * 1000);
+    (void)printf("║ Chamber area:        %12.3f m²           ║\n", main_rocket.chamber_area_m2);
+    (void)printf("║ Throat diameter:     %12.3f mm           ║\n", main_rocket.throat_diameter_m);
+    (void)printf("║ Throat area:         %12.3f m²           ║\n", main_rocket.throat_area_m2);
+    (void)printf("║ Exit diameter:       %12.3f mm           ║\n", main_rocket.exit_diameter_m);
+    (void)printf("║ Exit area:           %12.3f m²           ║\n", main_rocket.exit_area_m2);
     (void)printf("╠════════════════════════════════════════════════╣\n");
     (void)printf("║                  Rocket ratios:                ║\n");
     (void)printf("╠════════════════════════════════════════════════╣\n");
@@ -86,6 +86,7 @@ int main(){
     (void)printf("7. Change Oxidizer Molarity\n");
     (void)printf("8. Set target chamber pressure (atm)\n");
     (void)printf("9. Set target chamber pressure (Pa)\n");
+    (void)printf("10. Set chamber to throat ratio (Ac/At)\n");
     /*(void)printf("9. Set chamber to throat area ratio\n");*/
     (void)printf("\n-1. Quit\n");
     (void)printf("(No sanitization, this will be a GUI later)\n");
@@ -159,6 +160,11 @@ int main(){
         main_rocket.chamber_pressure_pa = temp_input;
         main_rocket.chamber_pressure_atm = PA_TO_ATM(temp_input);
         (void)recalculateFromOxidizerMol(&main_reaction, molFromChamberPressureAndVolume(&main_rocket)*2);
+        break;
+      case 10:
+        (void)printf("Chamber to throat ratio (Ac/At): ");
+        (void)scanf("%f", &temp_input);
+        main_rocket.ac_at = temp_input;
         break;
       default:
         /* I prefer to kill the program than to loop for now*/
