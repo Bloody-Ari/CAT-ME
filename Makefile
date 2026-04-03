@@ -45,8 +45,11 @@ TARGET_DIR := bin
 BINS := cat-me
 TARGETS := $(BINS:%=$(TARGET_DIR)/%)
 
-$(NAME): $(OBJS)
+$(NAME): directories $(OBJS)
 	$(CC) $(CFLAGS) $(CPPFLAGS) $(OBJS) -o $(TARGETS)
+
+directories:
+	mkdir -p $(TARGET_DIR) $(BUILD_DIR)
 
 $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c
 	$(CC) $(CFLAGS) $(CPPFLAGS) -c -o $@ $<
@@ -60,7 +63,6 @@ run-no-clean: $(NAME)
 
 debug: clean $(OBJS)
 	$(CC) $(CFLAGS) -g $(CPPFLAGS) $(OBJS) -o $(TARGETS)
-
 
 clean:
 	rm $(OBJS) $(TARGETS)
