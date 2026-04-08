@@ -79,17 +79,17 @@ int main(){
     (void)printf("╚════════════════════════════════════════════════╝\n");
 
     (void)printf("\nWhat do you want to change?: \n");
-    (void)printf("1. Set fuel mass\n");
-    (void)printf("2. Set oxidizer volume\n");
-    (void)printf("3. Set fuel mol\n");
-    (void)printf("4. Set oxidizer mol\n");
-    (void)printf("5. Set target product mol\n");
-    (void)printf("6. Change OF ratio\n");
-    (void)printf("7. Change Oxidizer Molarity\n");
-    (void)printf("8. Change Oxidizer wt%%\n");
-    (void)printf("9. Set target chamber pressure (atm)\n");
-    (void)printf("10. Set target chamber pressure (Pa)\n");
-    (void)printf("11. Set chamber to throat ratio (Ac/At)\n");
+    (void)printf("  1. Set fuel mass\n");
+    (void)printf("  2. Set oxidizer volume\n");
+    (void)printf("  3. Set fuel mol\n");
+    (void)printf("  4. Set oxidizer mol\n");
+    (void)printf("  5. Set target product mol\n");
+    (void)printf("  6. Change OF ratio\n");
+    (void)printf("  7. Change Oxidizer Molarity\n");
+    (void)printf("  8. Change Oxidizer wt%%\n");
+    (void)printf("  9. Set target chamber pressure (atm)\n");
+    (void)printf(" 10. Set target chamber pressure (Pa)\n");
+    (void)printf(" 11. Set chamber to throat ratio (Ac/At)\n");
     /*(void)printf("9. Set chamber to throat area ratio\n");*/
     (void)printf("\n-1. Quit\n");
     (void)printf("(No sanitization, this will be a GUI later)\n");
