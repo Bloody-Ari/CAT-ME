@@ -1,3 +1,10 @@
+/* [ [ Molarity ], [ Weight% ] ]*/
+
+
+#define LEN(x) (sizeof(x) / sizeof((x)[0]))
+
+extern const float HCL_WEIGHT_AND_MOLARITY_TABLE[24][24];
+        
 struct ReactionData {
   float fuel_g;
   float fuel_mol;
@@ -11,6 +18,7 @@ struct ReactionData {
   float oxidizer_mol;
   float oxidizer_uma;
   float oxidizer_molarity;
+  float oxidizer_wt_percentage;
   float oxidizer_density_g_cm3;
   float oxidizer_ratio;
 

@@ -24,7 +24,7 @@ NAME := "cat-me" #carpinchos aid tool, melissa edition
 #-------------------------------------------------------------------------------------------#
 
 CC := gcc 
-CFLAGS := -ansi -Wall -Werror -Wpedantic
+CFLAGS := -ansi -lm -Wall -Werror -Wpedantic
 CPPFLAGS := -MMD
 
 SRC_DIR := src

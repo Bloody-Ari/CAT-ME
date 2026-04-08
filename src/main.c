@@ -42,6 +42,8 @@ int main(){
     (void)printf("║                  Reaction data:                ║\n");
     (void)printf("╠════════════════════════════════════════════════╣\n");
     (void)printf("║ Oxidizer M:          %12.3f M            ║\n", main_reaction.oxidizer_molarity);
+    (void)printf("║ Oxidizer wt%%:        %12.3f wt%%          ║\n", main_reaction.oxidizer_wt_percentage);
+    (void)printf("║ Note: accurate wt%% is preferable               ║\n");
     (void)printf("╠════════════════════════════════════════════════╣\n");
     (void)printf("║ Fuel mass:           %12.3f g            ║\n", main_reaction.fuel_g);
     (void)printf("║ Oxidizer volume:     %12.3f ml           ║\n", main_reaction.oxidizer_volume);
@@ -84,9 +86,10 @@ int main(){
     (void)printf("5. Set target product mol\n");
     (void)printf("6. Change OF ratio\n");
     (void)printf("7. Change Oxidizer Molarity\n");
-    (void)printf("8. Set target chamber pressure (atm)\n");
-    (void)printf("9. Set target chamber pressure (Pa)\n");
-    (void)printf("10. Set chamber to throat ratio (Ac/At)\n");
+    (void)printf("8. Change Oxidizer wt%%\n");
+    (void)printf("9. Set target chamber pressure (atm)\n");
+    (void)printf("10. Set target chamber pressure (Pa)\n");
+    (void)printf("11. Set chamber to throat ratio (Ac/At)\n");
     /*(void)printf("9. Set chamber to throat area ratio\n");*/
     (void)printf("\n-1. Quit\n");
     (void)printf("(No sanitization, this will be a GUI later)\n");
@@ -142,26 +145,33 @@ int main(){
         (void)printf("New oxidizer molarity: ");
         (void)scanf("%f", &temp_input);
         main_reaction.oxidizer_molarity = temp_input;
+        main_reaction.oxidizer_wt_percentage = HClMolarityToWeightPercentage(temp_input, 0);
         if (main_reaction.fuel_g > 0){
           (void)recalculateFromFuelMol(&main_reaction, main_reaction.fuel_mol);
           (void)chamberPressureFromMol(&main_rocket, main_reaction.main_product_mol);
         }
         break;
       case 8:
+        (void)printf("New oxidizer wt%%: ");
+        (void)scanf("%f", &temp_input);
+        main_reaction.oxidizer_wt_percentage = temp_input;
+        main_reaction.oxidizer_molarity = HClWeightPercentageToMolarity(temp_input);
+        break;
+      case 9:
         (void)printf("Target chamber pressure (atm): ");
         (void)scanf("%f", &temp_input);
         main_rocket.chamber_pressure_atm = temp_input;
         main_rocket.chamber_pressure_pa = ATM_TO_PA(temp_input);
         (void)recalculateFromOxidizerMol(&main_reaction, molFromChamberPressureAndVolume(&main_rocket)*2);
         break;
-      case 9:
+      case 10:
         (void)printf("Target chamber pressure (Pa): ");
         (void)scanf("%f", &temp_input);
         main_rocket.chamber_pressure_pa = temp_input;
         main_rocket.chamber_pressure_atm = PA_TO_ATM(temp_input);
         (void)recalculateFromOxidizerMol(&main_reaction, molFromChamberPressureAndVolume(&main_rocket)*2);
         break;
-      case 10:
+      case 11:
         (void)printf("Chamber to throat ratio (Ac/At): ");
         (void)scanf("%f", &temp_input);
         main_rocket.ac_at = temp_input;
@@ -174,6 +184,5 @@ int main(){
 
   }
 
-  
   return 0;
 }

@@ -6,6 +6,23 @@
 #include <stdio.h>
 #endif
 
+#ifndef sqrt
+#include <math.h>
+#endif
+
+const float HCL_WEIGHT_AND_MOLARITY_TABLE[24][24] = {
+  {
+     7.0,  8.0,  9.0, 10.0, 11.0, 12.0, 13.0, 14.0, 15.0, 16.0, 17.0,
+    18.0, 19.0, 20.0, 22.0, 24.0, 26.0, 28.0, 30.0, 32.0, 34.0, 36.0,
+    38.0, 40.0
+  },
+  {
+     1.983,  2.277,  2.574,  2.873, 3.176, 3.481, 3.789, 4.099, 4.413,  4.729,
+     5.049,  5.370,  5.695,  6.023, 6.687, 7.362, 8.049, 8.748, 9.456, 10.175,
+    10.904, 11.642, 12.388, 13.140
+  }
+};
+
 struct ReactionData createEmptyReactionStruct(){
   struct ReactionData empty_reaction_data;
   empty_reaction_data.fuel_g = 0;
@@ -20,6 +37,7 @@ struct ReactionData createEmptyReactionStruct(){
   empty_reaction_data.oxidizer_mol = 0;
   empty_reaction_data.oxidizer_uma = 0;
   empty_reaction_data.oxidizer_molarity = 0;
+  empty_reaction_data.oxidizer_wt_percentage = 0;
   empty_reaction_data.oxidizer_density_g_cm3 = 0;
   empty_reaction_data.oxidizer_ratio = 0;
 
@@ -52,7 +70,8 @@ void defineMainReactionData(struct ReactionData *main_reaction){
 
   main_reaction->oxidizer_ratio = 6;
   main_reaction->oxidizer_uma = 36.46;
-  main_reaction->oxidizer_molarity =7.6;
+  main_reaction->oxidizer_molarity = 6.0;
+  main_reaction->oxidizer_wt_percentage = 20;
   main_reaction->oxidizer_density_g_cm3 = 1.01; /* depends on concentration */
 
   main_reaction->main_product_uma = 1.008;
@@ -66,10 +85,10 @@ void defineDefaultReactionData(struct DefaultReactionRatio *default_reaction){
 }
 
 /*
- * Maybe I should add a recalculate product and use that here and for the OF recalculations?
+ * TODO: 
+ *      use wt% instead of molarity
+ *      use a variable instead of 2 for product mol
  */
-
-/* I am hardcoding it for now...*/
 void recalculateFromFuelMol(struct ReactionData *main_reaction, float new_fuel_ammount_mol){
   main_reaction->fuel_mol = new_fuel_ammount_mol;
   main_reaction->fuel_g = new_fuel_ammount_mol * main_reaction->fuel_uma;
@@ -125,4 +144,73 @@ float volumeToMol(float volume_L, float molarity_mol_over_L){
 
 float molToMass(float mol, float uma){
   return mol*uma;
+}
+
+/*
+ * THE WT AND MOL CONVERSIONS ARE SPECIFIC FOR HCL!
+ * BUT If you want to do something similar start from here:
+ * internet archive (2016)
+ * https://archive.org/details/CRCHandbookOfChemistryAndPhysics97thEdition2016/page/n1069/mode/2up
+ * 
+ * You have two routes, one is using it in a direct way like I am doing, the other
+ * is to use density too. At least for HCl I found using a math function 
+ * (I gave the table to deepseek, asked for a function and checked it visually and with code)
+ * is more accurate than using density as an intermediary. I don't really like
+ * the density approax 'cause you are adding another guess and from what I tested
+ * this way is more accurate.
+ *
+ * Rounding will give you "perfect" values if you refer to the table used,
+ * It may prove useful and I'll like to add a flag for it in the UI, it
+ * may lead to "nicer" numbers, or make it easier to measure stuff and what not.
+ *
+ * Also, I'll probably add debug levels later, but not for now.
+ */
+float HClMolarityToWeightPercentage(float molarity, int round_weight){
+  float weight = 0;
+  int i;
+  /*
+  printf("\nConverting %12.6f\n", molarity);
+  */
+
+  for(i=0; i <= LEN(HCL_WEIGHT_AND_MOLARITY_TABLE[1]); i++){
+    if(molarity == HCL_WEIGHT_AND_MOLARITY_TABLE[1][i]){
+      weight = HCL_WEIGHT_AND_MOLARITY_TABLE[0][i];
+      /*
+      printf("Got %12.6f with table\n", weight);
+      */
+      return weight;
+    }
+  }
+
+  weight = (-0.27415 + sqrt(0.075183 + 0.005448 * molarity)) / 0.002724;
+  /*
+  printf("Got %12.6f with prediction\n", weight);
+  */
+  return weight;
+
+}
+
+float HClWeightPercentageToMolarity(float weight){
+  float molarity = 0;
+  int i;
+  /*
+  printf("Converting %12.6f\n", weight);
+  */
+  for(i=0; i <= LEN(HCL_WEIGHT_AND_MOLARITY_TABLE[0]); i++){
+    if(weight == HCL_WEIGHT_AND_MOLARITY_TABLE[0][i]){
+      molarity = HCL_WEIGHT_AND_MOLARITY_TABLE[1][i];
+      /*
+      printf("Got %12.6f using table\n", molarity);
+      */
+      return molarity;
+    }
+  }
+
+
+  molarity = 0.001362 * pow(weight,2) + 0.27415 * weight - 0.00467;
+  /*
+  printf("Got %12.6f with prediction\n", weight);
+  */
+  return molarity;
+
 }

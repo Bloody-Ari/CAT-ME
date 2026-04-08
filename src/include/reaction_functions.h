@@ -10,3 +10,6 @@ void recalculateOFRatio(struct ReactionData *main_reaction, struct DefaultReacti
 float massToMol(float mass, float uma);
 float volumeToMol(float volume_L, float molarity_mol_over_L);
 float molToMass(float mol, float uma);
+
+float HClMolarityToWeightPercentage(float molarity, int round_weight);
+float HClWeightPercentageToMolarity(float weight_percentage);
