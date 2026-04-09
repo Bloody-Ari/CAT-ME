@@ -3,6 +3,11 @@
  * RocketPerformanceData
  *
  */
+
+#ifndef cea_real
+#include "../cea/cea.h"
+#endif
+
 #define AMBIENT_TEMP_K 298.15
 #define R_IN_LITERS 8314.46261815324
 #define ATM_TO_PA(P) (P * 101325)
@@ -18,6 +23,7 @@ struct RocketData{
   float chamber_pressure_pa;
   float exit_pressure_atm;
   float exit_pressure_pa;
+  cea_real chamber_pressure_bar;
 
   /* meaures     */
   float chamber_volume_L;
@@ -35,4 +41,7 @@ struct RocketData{
   float c_star_m_over_s;
   float effective_exhaust_velocity_c_m_over_s;
   float Isp_s;
+
+  cea_rocket_solver *solver;
+  cea_rocket_solution *solution;
 };

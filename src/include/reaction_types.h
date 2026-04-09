@@ -1,11 +1,17 @@
 /* [ [ Molarity ], [ Weight% ] ]*/
 
+#ifndef cea_real
+#include "../cea/cea.h"
+#endif
 
 #define LEN(x) (sizeof(x) / sizeof((x)[0]))
+
+#define N_REACTANTS 3
 
 extern const float HCL_WEIGHT_AND_MOLARITY_TABLE[24][24];
         
 struct ReactionData {
+  /*tons of things should move to arrays haha*/
   float fuel_g;
   float fuel_mol;
   float fuel_uma; /* g/mol */
@@ -21,7 +27,7 @@ struct ReactionData {
   float oxidizer_wt_percentage;
   float oxidizer_density_g_cm3;
   float oxidizer_ratio;
-
+ 
   float fuel_residue_mol;
   float fuel_residue_g;
   float oxidizer_residue_mol;
@@ -34,6 +40,18 @@ struct ReactionData {
   float main_product_density_g_cm3;
 
   float of_ratio;
+
+  cea_int n_reactants;
+  cea_mixture *reaction;
+  cea_mixture *products;
+  cea_real *weights;
+  cea_int num_pts;
+  cea_real hc;
+  cea_string reactants[N_REACTANTS];
+  cea_real reactant_temps_k[N_REACTANTS];
+  cea_real fuel_weights_percentage[N_REACTANTS];
+  cea_real oxidant_weights_percentage[N_REACTANTS];
+  cea_string ommited_products[1];
 };
 
 struct DefaultReactionRatio {

@@ -6,6 +6,10 @@
 
 #include <stdio.h>
 
+#ifndef cea_real
+#include "cea/cea.h"
+#endif
+
 #include "include/reaction_types.h"
 #include "include/reaction_functions.h"
 #include "include/rocket_types.h"
@@ -29,6 +33,9 @@ int main(){
   (void)defineMainReactionData(&main_reaction);
   (void)defineDefaultRocketData(&main_rocket);
 
+  /* initialize cea */
+  cea_set_log_level(50); /* a compilation constant maybe... */
+  cea_init();
 
   /* Main menu!!! Should convert it to a function 
    * mainly so I can "count" iterations and limit them,

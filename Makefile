@@ -46,7 +46,7 @@ BINS := cat-me
 TARGETS := $(BINS:%=$(TARGET_DIR)/%)
 
 $(NAME): directories $(OBJS)
-	$(CC) $(CFLAGS) $(CPPFLAGS) $(OBJS) -o $(TARGETS)
+	$(CC) $(CFLAGS) $(CPPFLAGS) $(OBJS) lib/libcea_bindc.so -o $(TARGETS)
 
 directories:
 	mkdir -p $(TARGET_DIR) $(BUILD_DIR)
