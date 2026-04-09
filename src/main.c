@@ -5,6 +5,7 @@
  */
 
 #include <stdio.h>
+#include <stdlib.h>
 
 #ifndef CEA_LOG_LEVEL_ENUM
 #include "cea/cea.h"
@@ -14,6 +15,82 @@
 #include "include/reaction_functions.h"
 #include "include/rocket_types.h"
 #include "include/rocket_functions.h"
+
+/* should return the solution maybe??? */
+/* not sure, the structs maybe should have the options required */
+/*
+ *
+*/
+
+/*
+ * solve_with_of_ratio(initial, final, steps)
+ * like from 1.2 to 3.0 in 0.2 increments
+ *
+ */
+
+void ceaCreateStructrues(struct ReactionData *reaction_data, struct RocketData *rocket_data){
+  /* create mixtures */
+  cea_mixture_create(
+      reaction_data->reaction,
+      reaction_data->n_reactants,
+      reaction_data->reactants);
+
+  cea_mixture_create_from_reactants(
+      reaction_data->products, 
+      reaction_data->n_reactants, 
+      reaction_data->reactants,
+      0,
+      reaction_data->ommited_products); 
+  
+  cea_rocket_solver_create_with_reactants(
+      rocket_data->solver,
+      *reaction_data->products,
+      *reaction_data->reaction);
+
+  cea_rocket_solution_create(
+      rocket_data->solution,
+      *rocket_data->solver);
+
+  cea_rocket_solution_get_size(
+      *rocket_data->solution,
+      &rocket_data->num_pts);
+  return;
+}
+/*
+void ceaFacFromOF(struct ReactionData *reaction_data, struct RocketData *rocket_data){
+  cea_real *weights = calloc(reaction_data->n_reactants, sizeof(cea_real));
+  cea_real *area_ratio = calloc(reaction_data->num_pts, sizeof(cea_real));
+  cea_real *cstar = calloc(reaction_data->num_pts, sizeof(cea_real));
+
+  cea_mixture_of_ratio_to_weights(reaction_data->reaction, 3, reaction_data->oxidant_weights_percentage, reaction_data->fuel_weights_percentage, reaction_data->of_ratio, weights);
+
+  cea_rocket_solver_solve_fac(
+      rocket_data->solver,      // solver
+      rocket_data->solution,    // solution
+      weights,     // weights array
+      rocket_data->chamber_pressure,    // chamber pressure bar
+      pip,         // chamber to exit pressure ratio
+      1.0,         // number or pips
+      subar,       // subsonic area ratio
+      0.0,         // n of subsonic
+      supar,       // supersonic area ratio
+      0.0,         // n of supersonic
+      0.0,         // n_frz
+      hc,          // hc or tc (enthalpty or temp at chamber)
+      1,           // use_hc?
+      ac_at,       // mdot or ac_at
+      0,           // use_mdot?
+      0.0,         // initial chamber temp estimate
+      0);          // use_tc_est ^
+    
+                   
+  cea_rocket_solution_get_property(solution, CEA_AE_AT, num_pts, area_ratio);
+  cea_rocket_solution_get_property(solution, CEA_C_STAR, num_pts, cstar);
+
+  printf("Ae/At:\t\t\t%12.6f\n", area_ratio[4]);
+  printf("c*:\t\t\t%12.6f\n", cstar[4]);
+}
+*/
 
 int main(){
   /* defines the stoichiometric ratio of the reaction */
@@ -36,6 +113,7 @@ int main(){
   /* initialize cea */
   cea_set_log_level(50); /* a compilation constant maybe... */
   cea_init();
+  (void)ceaCreateStructrues(&main_reaction, &main_rocket);
 
   /* Main menu!!! Should convert it to a function 
    * mainly so I can "count" iterations and limit them,
@@ -66,8 +144,9 @@ int main(){
     (void)printf("╠════════════════════════════════════════════════╣\n");
     (void)printf("║                  Rocket data:                  ║\n");
     (void)printf("╠════════════════════════════════════════════════╣\n");
-    (void)printf("║ Chamber pressure:    %12.3f Pa           ║\n", main_rocket.chamber_pressure_pa);
+    (void)printf("║ Chamber pressure:    %12.3f kPa          ║\n", main_rocket.chamber_pressure_pa/1000);
     (void)printf("║ Chamber pressure:    %12.3f atm          ║\n", main_rocket.chamber_pressure_atm);
+    (void)printf("║ Chamber pressure:    %12.3f bar          ║\n", main_rocket.chamber_pressure_bar);
     (void)printf("║ Chamber volume:      %12.3f mL           ║\n", main_rocket.chamber_volume_L*1000);
     (void)printf("╠════════════════════════════════════════════════╣\n");
     (void)printf("║                  Rocket measures:              ║\n");
@@ -169,6 +248,9 @@ int main(){
         (void)scanf("%f", &temp_input);
         main_rocket.chamber_pressure_atm = temp_input;
         main_rocket.chamber_pressure_pa = ATM_TO_PA(temp_input);
+        main_rocket.chamber_pressure_bar = PA_TO_BAR(main_rocket.chamber_pressure_pa);
+        main_rocket.chamber_pressure = main_rocket.chamber_pressure_bar;
+        main_rocket.pressure_ratio[0] = main_rocket.chamber_pressure;
         (void)recalculateFromOxidizerMol(&main_reaction, molFromChamberPressureAndVolume(&main_rocket)*2);
         break;
       case 10:
@@ -176,6 +258,9 @@ int main(){
         (void)scanf("%f", &temp_input);
         main_rocket.chamber_pressure_pa = temp_input;
         main_rocket.chamber_pressure_atm = PA_TO_ATM(temp_input);
+        main_rocket.chamber_pressure_bar = PA_TO_BAR(temp_input);
+        main_rocket.chamber_pressure = main_rocket.chamber_pressure_bar;
+        main_rocket.pressure_ratio[0] = main_rocket.chamber_pressure;
         (void)recalculateFromOxidizerMol(&main_reaction, molFromChamberPressureAndVolume(&main_rocket)*2);
         break;
       case 11:

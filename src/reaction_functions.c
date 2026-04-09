@@ -76,6 +76,25 @@ void defineMainReactionData(struct ReactionData *main_reaction){
 
   main_reaction->main_product_uma = 1.008;
   main_reaction->of_ratio = 3;
+  main_reaction->n_reactants = 3;
+
+  main_reaction->reactants[0] = "AL";
+  main_reaction->reactants[1] = "HCL";
+  main_reaction->reactants[2] = "H2O";
+
+  main_reaction->reactant_temps_k[0] = 298.15;
+  main_reaction->reactant_temps_k[1] = 298.15;
+  main_reaction->reactant_temps_k[2] = 298.15;
+
+  main_reaction->fuel_weights_percentage[0] = 1.0;
+  main_reaction->fuel_weights_percentage[1] = 0.0;
+  main_reaction->fuel_weights_percentage[2] = 0.0;
+
+  main_reaction->oxidant_weights_percentage[0] = 0.0;
+  main_reaction->oxidant_weights_percentage[1] = 0.2;
+  main_reaction->oxidant_weights_percentage[2] = 0.8;
+
+  main_reaction->ommited_products[0] = "";
 }
 
 void defineDefaultReactionData(struct DefaultReactionRatio *default_reaction){

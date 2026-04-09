@@ -62,7 +62,7 @@ run-no-clean: $(NAME)
 	bin/cat-me
 
 debug: clean $(OBJS)
-	$(CC) $(CFLAGS) -g $(CPPFLAGS) $(OBJS) -o $(TARGETS)
+	$(CC) $(CFLAGS) -g $(CPPFLAGS) $(OBJS) lib/libcea_bindc.so -o $(TARGETS)
 
 clean:
 	rm $(OBJS) $(TARGETS)

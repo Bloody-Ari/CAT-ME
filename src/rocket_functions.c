@@ -45,12 +45,19 @@ void defineDefaultRocketData(struct RocketData *rocket_data){
   rocket_data->chamber_diameter_m    = 0.0127521;
   rocket_data->c_star_m_over_s       = 0;
 
+  rocket_data->subar[0] = 0.0;
+  rocket_data->supar[0] = 0.0;
+
   return;
 }
 
 void chamberPressureFromMol(struct RocketData *rocket_data, float species_mol){
-  rocket_data->chamber_pressure_pa = (species_mol * R_IN_LITERS * rocket_data->chamber_temperature_K) / rocket_data->chamber_volume_L;
+  rocket_data->chamber_pressure_pa  = (species_mol * R_IN_LITERS * rocket_data->chamber_temperature_K) / rocket_data->chamber_volume_L;
   rocket_data->chamber_pressure_atm = PA_TO_ATM(rocket_data->chamber_pressure_pa);
+  rocket_data->chamber_pressure_bar = PA_TO_BAR(rocket_data->chamber_pressure_pa);
+
+  rocket_data->chamber_pressure = rocket_data->chamber_pressure_bar;
+  rocket_data->pressure_ratio[0]   = rocket_data->chamber_pressure;
   return;
 }
 

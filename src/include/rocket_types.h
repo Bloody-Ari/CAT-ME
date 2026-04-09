@@ -12,6 +12,8 @@
 #define R_IN_LITERS 8314.46261815324
 #define ATM_TO_PA(P) (P * 101325)
 #define PA_TO_ATM(P) (P / 101325)
+#define PA_TO_BAR(P) (P / 100000)
+#define BAR_TO_PA(P) (P * 100000)
 
 struct RocketData{
   /* ratios      */
@@ -44,4 +46,9 @@ struct RocketData{
 
   cea_rocket_solver *solver;
   cea_rocket_solution *solution;
+  cea_real chamber_pressure;
+  cea_int num_pts;
+  cea_real pressure_ratio[1];
+  cea_real subar[1];
+  cea_real supar[1];
 };

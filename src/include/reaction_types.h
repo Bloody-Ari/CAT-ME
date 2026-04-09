@@ -6,6 +6,9 @@
 
 #define LEN(x) (sizeof(x) / sizeof((x)[0]))
 
+/* yeaaa it's not the best, but I don't want to change ansi for now 
+ * honestly I am thiking about c23 or C++
+ */
 #define N_REACTANTS 3
 
 extern const float HCL_WEIGHT_AND_MOLARITY_TABLE[24][24];
@@ -45,7 +48,6 @@ struct ReactionData {
   cea_mixture *reaction;
   cea_mixture *products;
   cea_real *weights;
-  cea_int num_pts;
   cea_real hc;
   cea_string reactants[N_REACTANTS];
   cea_real reactant_temps_k[N_REACTANTS];
