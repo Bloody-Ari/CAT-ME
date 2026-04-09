@@ -6,7 +6,7 @@
 
 #include <stdio.h>
 
-#ifndef cea_real
+#ifndef CEA_LOG_LEVEL_ENUM
 #include "cea/cea.h"
 #endif
 
