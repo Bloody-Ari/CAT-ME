@@ -119,8 +119,6 @@ int main(){
   (void)defineMainReactionData(&main_reaction);
   (void)defineDefaultRocketData(&main_rocket);
 
-  (void)ceaCreateStructrues(&main_reaction, &main_rocket);
-  (void)ceaDestroyStructures(&main_reaction, &main_rocket);
 
 
   /* Main menu!!! Should convert it to a function 
@@ -193,6 +191,8 @@ int main(){
 
     switch(choice){
       case -1:
+        (void)ceaCreateStructrues(&main_reaction, &main_rocket);
+        (void)ceaDestroyStructures(&main_reaction, &main_rocket);
         return 0;
       case 1:
         (void)printf("\nInput grams of fuel: ");
@@ -279,10 +279,14 @@ int main(){
       default:
         /* I prefer to kill the program than to loop for now*/
         (void)printf("Wrong input...\n");
+        (void)ceaCreateStructrues(&main_reaction, &main_rocket);
+        (void)ceaDestroyStructures(&main_reaction, &main_rocket);
         return 0;
     }
 
   }
 
+  (void)ceaCreateStructrues(&main_reaction, &main_rocket);
+  (void)ceaDestroyStructures(&main_reaction, &main_rocket);
   return 0;
 }
