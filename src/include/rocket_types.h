@@ -44,8 +44,8 @@ struct RocketData{
   float effective_exhaust_velocity_c_m_over_s;
   float Isp_s;
 
-  cea_rocket_solver *solver;
-  cea_rocket_solution *solution;
+  cea_rocket_solver solver;
+  cea_rocket_solution solution;
   cea_real chamber_pressure;
   cea_int num_pts;
   cea_real pressure_ratio[1];

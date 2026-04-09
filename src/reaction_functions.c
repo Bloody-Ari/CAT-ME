@@ -95,6 +95,7 @@ void defineMainReactionData(struct ReactionData *main_reaction){
   main_reaction->oxidant_weights_percentage[2] = 0.8;
 
   main_reaction->ommited_products[0] = "";
+
 }
 
 void defineDefaultReactionData(struct DefaultReactionRatio *default_reaction){

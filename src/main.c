@@ -29,32 +29,36 @@
  */
 
 void ceaCreateStructrues(struct ReactionData *reaction_data, struct RocketData *rocket_data){
-  /* create mixtures */
   cea_mixture_create(
-      reaction_data->reaction,
+      &reaction_data->reaction,
       reaction_data->n_reactants,
       reaction_data->reactants);
 
   cea_mixture_create_from_reactants(
-      reaction_data->products, 
-      reaction_data->n_reactants, 
+      &reaction_data->products,
+      reaction_data->n_reactants,
       reaction_data->reactants,
       0,
-      reaction_data->ommited_products); 
-  
+      reaction_data->ommited_products);
+
   cea_rocket_solver_create_with_reactants(
-      rocket_data->solver,
-      *reaction_data->products,
-      *reaction_data->reaction);
+      &rocket_data->solver,
+      reaction_data->products,
+      reaction_data->reaction);
 
   cea_rocket_solution_create(
-      rocket_data->solution,
-      *rocket_data->solver);
+      &rocket_data->solution,
+      rocket_data->solver);
 
-  cea_rocket_solution_get_size(
-      *rocket_data->solution,
-      &rocket_data->num_pts);
   return;
+}
+
+void ceaDestroyStructures(struct ReactionData *reaction_data, struct RocketData *rocket_data){
+  cea_mixture_destroy(&reaction_data->reaction);
+  cea_mixture_destroy(&reaction_data->products);
+
+  cea_rocket_solver_destroy(&rocket_data->solver);
+  cea_rocket_solution_destroy(&rocket_data->solution);
 }
 /*
 void ceaFacFromOF(struct ReactionData *reaction_data, struct RocketData *rocket_data){
@@ -103,17 +107,20 @@ int main(){
 
   float temp_input = 0;
   /*
+  cea_mixture reaction;
   float chamber_to_throat_area_ratio = 2.0;
   */
+
+  /* initialize cea */
+  cea_set_log_level(0); /* a compilation constant maybe... */
+  cea_init();
+  (void)ceaCreateStructrues(&main_reaction, &main_rocket);
+  (void)ceaDestroyStructures(&main_reaction, &main_rocket);
 
   (void)defineDefaultReactionData(&default_reaction);
   (void)defineMainReactionData(&main_reaction);
   (void)defineDefaultRocketData(&main_rocket);
 
-  /* initialize cea */
-  cea_set_log_level(50); /* a compilation constant maybe... */
-  cea_init();
-  (void)ceaCreateStructrues(&main_reaction, &main_rocket);
 
   /* Main menu!!! Should convert it to a function 
    * mainly so I can "count" iterations and limit them,

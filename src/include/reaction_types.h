@@ -45,8 +45,8 @@ struct ReactionData {
   float of_ratio;
 
   cea_int n_reactants;
-  cea_mixture *reaction;
-  cea_mixture *products;
+  cea_mixture reaction;
+  cea_mixture products;
   cea_real *weights;
   cea_real hc;
   cea_string reactants[N_REACTANTS];
