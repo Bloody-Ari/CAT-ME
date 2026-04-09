@@ -114,12 +114,13 @@ int main(){
   /* initialize cea */
   cea_set_log_level(0); /* a compilation constant maybe... */
   cea_init();
-  (void)ceaCreateStructrues(&main_reaction, &main_rocket);
-  (void)ceaDestroyStructures(&main_reaction, &main_rocket);
 
   (void)defineDefaultReactionData(&default_reaction);
   (void)defineMainReactionData(&main_reaction);
   (void)defineDefaultRocketData(&main_rocket);
+
+  (void)ceaCreateStructrues(&main_reaction, &main_rocket);
+  (void)ceaDestroyStructures(&main_reaction, &main_rocket);
 
 
   /* Main menu!!! Should convert it to a function 
