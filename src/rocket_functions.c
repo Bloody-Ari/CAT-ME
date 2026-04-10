@@ -6,7 +6,7 @@ struct RocketData createEmptyRocketData(){
   struct RocketData empty_rocket_data;
   /* ratios      */
   empty_rocket_data.ac_at = 0; /* chamber to throat area ratio Ac/At */
-  empty_rocket_data.at_ae = 0; /* throat to exit area ratio Ac/At */
+  empty_rocket_data.ae_at = 0; /* throat to exit area ratio Ac/At */
 
   /* pressures   */
   empty_rocket_data.chamber_pressure_atm = 0; /* kind of just for show */
@@ -36,7 +36,7 @@ struct RocketData createEmptyRocketData(){
 
 void defineDefaultRocketData(struct RocketData *rocket_data){
   rocket_data->ac_at                 = 2.0;
-  rocket_data->at_ae                 = 0;
+  rocket_data->ae_at                 = 0;
   rocket_data->chamber_pressure_atm  = 5;
   rocket_data->chamber_pressure_pa   = rocket_data->chamber_pressure_atm * 101300;
   rocket_data->chamber_pressure_bar  = rocket_data->chamber_pressure_atm * 1.01325;
@@ -59,7 +59,7 @@ void chamberPressureFromMol(struct RocketData *rocket_data, float species_mol){
   rocket_data->chamber_pressure_bar = PA_TO_BAR(rocket_data->chamber_pressure_pa);
 
   rocket_data->chamber_pressure = rocket_data->chamber_pressure_bar;
-  rocket_data->pressure_ratio[0]   = rocket_data->chamber_pressure;
+  rocket_data->pressure_ratio[0] = rocket_data->chamber_pressure_bar;
   return;
 }
 

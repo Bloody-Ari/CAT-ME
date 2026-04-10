@@ -66,7 +66,7 @@ void ceaDestroyStructures(struct ReactionData *reaction_data, struct RocketData 
 
 void ceaFacFromOF(struct ReactionData *reaction_data, struct RocketData *rocket_data){
   cea_real *weights = calloc(reaction_data->n_reactants, sizeof(cea_real));
-  cea_real *at_ae   = calloc(rocket_data->num_pts, sizeof(cea_real));
+  cea_real *ae_at   = calloc(rocket_data->num_pts, sizeof(cea_real));
   cea_real *cstar   = calloc(rocket_data->num_pts, sizeof(cea_real));
   cea_real hc;
 
@@ -116,14 +116,14 @@ void ceaFacFromOF(struct ReactionData *reaction_data, struct RocketData *rocket_
       0);                                /* use_tc_est */
 
 
-  cea_rocket_solution_get_property(rocket_data->solution, CEA_AE_AT, rocket_data->num_pts, at_ae);
+  cea_rocket_solution_get_property(rocket_data->solution, CEA_AE_AT, rocket_data->num_pts, ae_at);
   cea_rocket_solution_get_property(rocket_data->solution, CEA_C_STAR, rocket_data->num_pts, cstar);
 
-  printf("Ae/At:\t\t\t%12.6f\n", at_ae[4]);
-  printf("c*:\t\t\t%12.6f\n", cstar[4]);
+  rocket_data->ae_at = ae_at[4];
+  rocket_data->c_star_m_over_s = cstar[4];
 
   free(cstar);
-  free(at_ae);
+  free(ae_at);
   free(weights);
   printf("\n");
 }
@@ -187,6 +187,7 @@ int main(){
   (void)defineDefaultRocketData(&main_rocket);
 
   (void)ceaCreateStructrues(&main_reaction, &main_rocket);
+  (void)ceaFacFromOF(&main_reaction, &main_rocket);
 
   /* Main menu!!! Should convert it to a function 
    * mainly so I can "count" iterations and limit them,
@@ -233,8 +234,9 @@ int main(){
     (void)printf("╠════════════════════════════════════════════════╣\n");
     (void)printf("║                  Rocket ratios:                ║\n");
     (void)printf("╠════════════════════════════════════════════════╣\n");
-    (void)printf("║ Ac/At:               %12.3f              ║\n", main_rocket.ac_at);
-    (void)printf("║ At/Ae:               %12.3f              ║\n", main_rocket.at_ae);
+    (void)printf("║ Ac/At:                    %12.8f         ║\n", main_rocket.ac_at);
+    (void)printf("║ At/Ae:                    %12.8f         ║\n", main_rocket.ae_at);
+    (void)printf("║ At/Ae:                %12.4f             ║\n", main_rocket.ae_at);
     (void)printf("╚════════════════════════════════════════════════╝\n");
 
     (void)printf("\nWhat do you want to change?: \n");
@@ -300,7 +302,9 @@ int main(){
         (void)scanf("%f", &temp_input);
         (void)recalculateOFRatio(&main_reaction, &default_reaction, temp_input);
         (void)recalculateFromOxidizerMol(&main_reaction, main_reaction.oxidizer_mol);
-        (void)chamberPressureFromMol(&main_rocket, main_reaction.main_product_mol);
+        if(main_reaction.main_product_mol > 0)
+          (void)chamberPressureFromMol(&main_rocket, main_reaction.main_product_mol);
+        (void)ceaFacFromOF(&main_reaction, &main_rocket);
         break;
       case 7:
         (void)printf("New oxidizer molarity: ");

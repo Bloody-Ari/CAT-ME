@@ -18,7 +18,7 @@
 struct RocketData{
   /* ratios      */
   float ac_at; /* chamber to throat area ratio Ac/At */
-  float at_ae; /* throat to exit area ratio Ac/At */
+  float ae_at; /* throat to exit area ratio Ac/At */
 
   /* pressures   */
   float chamber_pressure_atm; /* kind of just for show */
