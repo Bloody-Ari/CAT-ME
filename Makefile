@@ -24,7 +24,7 @@ NAME := "cat-me" #carpinchos aid tool, melissa edition
 #-------------------------------------------------------------------------------------------#
 
 CC := gcc 
-CFLAGS := -ansi -lm -Wall -Werror -Wpedantic
+CFLAGS := -ansi -lm -Wall -Werror -Wpedantic -g
 CPPFLAGS := -MMD
 
 SRC_DIR := src
@@ -60,9 +60,6 @@ run: clean $(NAME)
 
 run-no-clean: $(NAME)
 	bin/cat-me
-
-debug: clean $(OBJS)
-	$(CC) $(CFLAGS) -g $(CPPFLAGS) $(OBJS) lib/libcea_bindc.so -o $(TARGETS)
 
 clean:
 	rm $(OBJS) $(TARGETS)

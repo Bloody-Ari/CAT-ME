@@ -50,6 +50,8 @@ void ceaCreateStructrues(struct ReactionData *reaction_data, struct RocketData *
       &rocket_data->solution,
       rocket_data->solver);
 
+  cea_rocket_solution_get_size(rocket_data->solution, &rocket_data->num_pts);
+
   return;
 }
 
@@ -59,6 +61,71 @@ void ceaDestroyStructures(struct ReactionData *reaction_data, struct RocketData 
 
   cea_rocket_solver_destroy(&rocket_data->solver);
   cea_rocket_solution_destroy(&rocket_data->solution);
+}
+
+
+void ceaFacFromOF(struct ReactionData *reaction_data, struct RocketData *rocket_data){
+  cea_real *weights = calloc(reaction_data->n_reactants, sizeof(cea_real));
+  cea_real *at_ae   = calloc(rocket_data->num_pts, sizeof(cea_real));
+  cea_real *cstar   = calloc(rocket_data->num_pts, sizeof(cea_real));
+  cea_real hc;
+
+  /*
+  cea_real pip[1];
+  pip[0] = rocket_data->chamber_pressure_bar;
+  */
+
+  printf("\nSolving with OF Ratio:\t\t%3.2f\n", reaction_data->of_ratio);
+  cea_mixture_of_ratio_to_weights(
+      reaction_data->reaction,
+      reaction_data->n_reactants,
+      reaction_data->oxidant_weights_percentage,
+      reaction_data->fuel_weights_percentage,
+      reaction_data->of_ratio, 
+      weights);
+
+  cea_mixture_calc_property_multitemp(
+      reaction_data->reaction, 
+      CEA_ENTHALPY, 
+      reaction_data->n_reactants, 
+      weights, 
+      reaction_data->n_reactants, 
+      reaction_data->reactant_temps_k, 
+      &hc);
+  hc = hc / 8314.51;
+
+  cea_rocket_solver_solve_fac(
+      rocket_data->solver,               /* solver */
+      rocket_data->solution,             /* solution */
+      weights,                           /* weights array */
+      rocket_data->chamber_pressure_bar, /* chamber pressure bar */
+      /*rocket_data->pressure_ratio,        chamber to exit pressure ratio 
+      pip,*/
+      rocket_data->pressure_ratio,
+      1.0,                               /* number or pips */
+      rocket_data->subar,                /* subsonic area ratio */
+      0.0,                               /* n of subsonic */
+      rocket_data->supar,                /* supersonic area ratio */
+      0.0,                               /* n of supersonic */
+      0.0,                               /* n_frz */
+      hc,                                /* hc or tc (enthalpty or temp at chamber) */
+      1,                                 /* use_hc? */
+      rocket_data->ac_at,                /* mdot or ac_at */
+      0,                                 /* use_mdot? */
+      0.0,                               /* initial chamber temp estimate */
+      0);                                /* use_tc_est */
+
+
+  cea_rocket_solution_get_property(rocket_data->solution, CEA_AE_AT, rocket_data->num_pts, at_ae);
+  cea_rocket_solution_get_property(rocket_data->solution, CEA_C_STAR, rocket_data->num_pts, cstar);
+
+  printf("Ae/At:\t\t\t%12.6f\n", at_ae[4]);
+  printf("c*:\t\t\t%12.6f\n", cstar[4]);
+
+  free(cstar);
+  free(at_ae);
+  free(weights);
+  printf("\n");
 }
 /*
 void ceaFacFromOF(struct ReactionData *reaction_data, struct RocketData *rocket_data){
@@ -112,14 +179,14 @@ int main(){
   */
 
   /* initialize cea */
-  cea_set_log_level(0); /* a compilation constant maybe... */
+  cea_set_log_level(50); /* a compilation constant maybe... */
   cea_init();
 
   (void)defineDefaultReactionData(&default_reaction);
   (void)defineMainReactionData(&main_reaction);
   (void)defineDefaultRocketData(&main_rocket);
 
-
+  (void)ceaCreateStructrues(&main_reaction, &main_rocket);
 
   /* Main menu!!! Should convert it to a function 
    * mainly so I can "count" iterations and limit them,
@@ -182,6 +249,7 @@ int main(){
     (void)printf("  9. Set target chamber pressure (atm)\n");
     (void)printf(" 10. Set target chamber pressure (Pa)\n");
     (void)printf(" 11. Set chamber to throat ratio (Ac/At)\n");
+    (void)printf(" 12. Run CEA (testing)\n");
     /*(void)printf("9. Set chamber to throat area ratio\n");*/
     (void)printf("\n-1. Quit\n");
     (void)printf("(No sanitization, this will be a GUI later)\n");
@@ -191,7 +259,6 @@ int main(){
 
     switch(choice){
       case -1:
-        (void)ceaCreateStructrues(&main_reaction, &main_rocket);
         (void)ceaDestroyStructures(&main_reaction, &main_rocket);
         return 0;
       case 1:
@@ -276,17 +343,18 @@ int main(){
         (void)scanf("%f", &temp_input);
         main_rocket.ac_at = temp_input;
         break;
+      case 12:
+        (void)ceaFacFromOF(&main_reaction, &main_rocket);
+        break;
       default:
         /* I prefer to kill the program than to loop for now*/
         (void)printf("Wrong input...\n");
-        (void)ceaCreateStructrues(&main_reaction, &main_rocket);
         (void)ceaDestroyStructures(&main_reaction, &main_rocket);
         return 0;
     }
 
   }
 
-  (void)ceaCreateStructrues(&main_reaction, &main_rocket);
   (void)ceaDestroyStructures(&main_reaction, &main_rocket);
   return 0;
 }

@@ -37,8 +37,10 @@ struct RocketData createEmptyRocketData(){
 void defineDefaultRocketData(struct RocketData *rocket_data){
   rocket_data->ac_at                 = 2.0;
   rocket_data->at_ae                 = 0;
-  rocket_data->chamber_pressure_atm  = 0;
-  rocket_data->chamber_pressure_pa   = 0;
+  rocket_data->chamber_pressure_atm  = 5;
+  rocket_data->chamber_pressure_pa   = rocket_data->chamber_pressure_atm * 101300;
+  rocket_data->chamber_pressure_bar  = rocket_data->chamber_pressure_atm * 1.01325;
+  rocket_data->pressure_ratio[0] = rocket_data->chamber_pressure_bar;
   rocket_data->chamber_temperature_K = AMBIENT_TEMP_K;
   rocket_data->chamber_volume_L      = 0.600;
   rocket_data->chamber_area_m2       = 0.127718352;
