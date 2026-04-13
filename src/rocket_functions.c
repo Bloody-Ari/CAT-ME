@@ -2,6 +2,10 @@
   #include "include/rocket_types.h"
 #endif
 
+#ifndef sqrt
+  #include <math.h>
+#endif
+
 struct RocketData createEmptyRocketData(){
   struct RocketData empty_rocket_data;
   /* ratios      */
@@ -43,8 +47,8 @@ void defineDefaultRocketData(struct RocketData *rocket_data){
   rocket_data->pressure_ratio[0] = rocket_data->chamber_pressure_bar;
   rocket_data->chamber_temperature_K = AMBIENT_TEMP_K;
   rocket_data->chamber_volume_L      = 0.600;
-  rocket_data->chamber_area_m2       = 0.127718352;
-  rocket_data->chamber_diameter_m    = 0.0127521;
+  rocket_data->chamber_diameter_m    = 0.01275;
+  rocket_data->chamber_area_m2       = pow(rocket_data->chamber_diameter_m/2, 2) * 3.14159265359;
   rocket_data->c_star_m_over_s       = 0;
 
   rocket_data->subar[0] = 0.0;
@@ -65,4 +69,17 @@ void chamberPressureFromMol(struct RocketData *rocket_data, float species_mol){
 
 float molFromChamberPressureAndVolume(struct RocketData *rocket_data){
   return (rocket_data->chamber_pressure_pa * rocket_data->chamber_volume_L)/(R_IN_LITERS * rocket_data->chamber_temperature_K);
+}
+
+
+/* not angles yet */
+void recalculateNozzleDiametersAndAreas(struct RocketData *rocket_data){
+  /* tengo ac/at y ae/at */
+  /* ae/at = ratio */
+  /* ae = ratio * at */
+  rocket_data->throat_area_m2 = rocket_data->chamber_area_m2 / rocket_data->ac_at;
+  rocket_data->throat_diameter_m = 2 * sqrt(rocket_data->throat_area_m2 / 3.14159265359);
+
+  rocket_data->exit_area_m2 = rocket_data->throat_area_m2 * rocket_data->ae_at;
+  rocket_data->exit_diameter_m = 2 * sqrt(rocket_data->exit_area_m2 / 3.14159265359);
 }

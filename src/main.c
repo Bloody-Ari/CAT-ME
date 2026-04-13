@@ -11,6 +11,10 @@
 #include "cea/cea.h"
 #endif
 
+#ifndef sqrt
+#include <math.h>
+#endif
+
 #include "include/reaction_types.h"
 #include "include/reaction_functions.h"
 #include "include/rocket_types.h"
@@ -226,11 +230,11 @@ int main(){
     (void)printf("║                  Rocket measures:              ║\n");
     (void)printf("╠════════════════════════════════════════════════╣\n");
     (void)printf("║ Chamber diameter:    %12.3f mm           ║\n", main_rocket.chamber_diameter_m * 1000);
-    (void)printf("║ Chamber area:        %12.3f m²           ║\n", main_rocket.chamber_area_m2);
-    (void)printf("║ Throat diameter:     %12.3f mm           ║\n", main_rocket.throat_diameter_m);
-    (void)printf("║ Throat area:         %12.3f m²           ║\n", main_rocket.throat_area_m2);
-    (void)printf("║ Exit diameter:       %12.3f mm           ║\n", main_rocket.exit_diameter_m);
-    (void)printf("║ Exit area:           %12.3f m²           ║\n", main_rocket.exit_area_m2);
+    (void)printf("║ Chamber area:        %12.3f mm²          ║\n", main_rocket.chamber_area_m2 * 1000);
+    (void)printf("║ Throat diameter:     %12.3f mm           ║\n", main_rocket.throat_diameter_m * 1000);
+    (void)printf("║ Throat area:         %12.3f mm²          ║\n", main_rocket.throat_area_m2 * 1000);
+    (void)printf("║ Exit diameter:       %12.3f mm           ║\n", main_rocket.exit_diameter_m * 1000);
+    (void)printf("║ Exit area:           %12.3f mm²          ║\n", main_rocket.exit_area_m2 * 1000);
     (void)printf("╠════════════════════════════════════════════════╣\n");
     (void)printf("║                  Rocket ratios:                ║\n");
     (void)printf("╠════════════════════════════════════════════════╣\n");
@@ -252,6 +256,7 @@ int main(){
     (void)printf(" 10. Set target chamber pressure (Pa)\n");
     (void)printf(" 11. Set chamber to throat ratio (Ac/At)\n");
     (void)printf(" 12. Run CEA (testing)\n");
+    (void)printf(" 20. Run CEA (testing)\n");
     /*(void)printf("9. Set chamber to throat area ratio\n");*/
     (void)printf("\n-1. Quit\n");
     (void)printf("(No sanitization, this will be a GUI later)\n");
@@ -348,7 +353,13 @@ int main(){
         main_rocket.ac_at = temp_input;
         break;
       case 12:
+        (void)printf("Chamber volume in mL: ");
+        (void)scanf("%f", &temp_input);
+        main_rocket.chamber_diameter_m = temp_input;
+        main_rocket.chamber_area_m2 = pow(main_rocket.chamber_diameter_m/2, 2) * 3.14159265359;
+      case 20:
         (void)ceaFacFromOF(&main_reaction, &main_rocket);
+        (void)recalculateNozzleDiametersAndAreas(&main_rocket);
         break;
       default:
         /* I prefer to kill the program than to loop for now*/
