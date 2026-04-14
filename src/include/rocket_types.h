@@ -38,6 +38,7 @@ struct RocketData{
 
   float exit_diameter_m;
   float exit_area_m2;
+  float cone_length_m;
 
   /* performance */
   float c_star_m_over_s;

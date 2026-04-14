@@ -17,6 +17,7 @@ struct RocketData createEmptyRocketData(){
   empty_rocket_data.chamber_pressure_pa  = 0;
   empty_rocket_data.exit_pressure_atm    = 0;
   empty_rocket_data.exit_pressure_pa     = 0;
+  empty_rocket_data.cone_length_m        = 0;
 
   /* meaures     */
   empty_rocket_data.chamber_volume_L      = 0;
@@ -39,7 +40,9 @@ struct RocketData createEmptyRocketData(){
 }
 
 void defineDefaultRocketData(struct RocketData *rocket_data){
-  rocket_data->ac_at                 = 2.0;
+  /* ac/at > 4 makes chamber velocity neglegible */
+  /* I want to test this tho */
+  rocket_data->ac_at                 = 4.5;
   rocket_data->ae_at                 = 0;
   rocket_data->chamber_pressure_atm  = 5;
   rocket_data->chamber_pressure_pa   = rocket_data->chamber_pressure_atm * 101300;
@@ -82,4 +85,6 @@ void recalculateNozzleDiametersAndAreas(struct RocketData *rocket_data){
 
   rocket_data->exit_area_m2 = rocket_data->throat_area_m2 * rocket_data->ae_at;
   rocket_data->exit_diameter_m = 2 * sqrt(rocket_data->exit_area_m2 / 3.14159265359);
+
+  rocket_data->cone_length_m = ( rocket_data->exit_diameter_m / 2 - rocket_data->throat_diameter_m / 2) / 0.26794919243;
 }
