@@ -379,6 +379,9 @@ int main(){
         (void)printf("Chamber volume in mL: ");
         (void)scanf("%f", &temp_input);
         main_rocket.chamber_volume_L = temp_input / 1000;
+        (void)chamberPressureFromMol(&main_rocket, main_reaction.main_product_mol);
+        (void)ceaFacFromOF(&main_reaction, &main_rocket);
+        (void)recalculateNozzleDiametersAndAreas(&main_rocket);
       case 50:
         (void)ceaFacFromOF(&main_reaction, &main_rocket);
         (void)recalculateNozzleDiametersAndAreas(&main_rocket);
