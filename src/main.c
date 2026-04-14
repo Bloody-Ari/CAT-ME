@@ -192,6 +192,7 @@ int main(){
 
   (void)ceaCreateStructrues(&main_reaction, &main_rocket);
   (void)ceaFacFromOF(&main_reaction, &main_rocket);
+  (void)recalculateNozzleDiametersAndAreas(&main_rocket);
 
   /* Main menu!!! Should convert it to a function 
    * mainly so I can "count" iterations and limit them,
@@ -239,8 +240,8 @@ int main(){
     (void)printf("║                  Rocket ratios:                ║\n");
     (void)printf("╠════════════════════════════════════════════════╣\n");
     (void)printf("║ Ac/At:                    %12.8f         ║\n", main_rocket.ac_at);
-    (void)printf("║ At/Ae:                    %12.8f         ║\n", main_rocket.ae_at);
-    (void)printf("║ At/Ae:                %12.4f             ║\n", main_rocket.ae_at);
+    (void)printf("║ Ae/At:                    %12.8f         ║\n", main_rocket.ae_at);
+    (void)printf("║ Ae/At:                %12.4f             ║\n", main_rocket.ae_at);
     (void)printf("╚════════════════════════════════════════════════╝\n");
 
     (void)printf("\nWhat do you want to change?: \n");
@@ -255,8 +256,8 @@ int main(){
     (void)printf("  9. Set target chamber pressure (atm)\n");
     (void)printf(" 10. Set target chamber pressure (Pa)\n");
     (void)printf(" 11. Set chamber to throat ratio (Ac/At)\n");
-    (void)printf(" 12. Run CEA (testing)\n");
-    (void)printf(" 20. Run CEA (testing)\n");
+    (void)printf(" 12. Set chamber volume (ml)\n");
+    (void)printf(" 50. Refresh rocket\n");
     /*(void)printf("9. Set chamber to throat area ratio\n");*/
     (void)printf("\n-1. Quit\n");
     (void)printf("(No sanitization, this will be a GUI later)\n");
@@ -275,6 +276,8 @@ int main(){
         (void)recalculateFromFuelMol(&main_reaction, temp_input);
         printf("Calculating pressure\n");
         (void)chamberPressureFromMol(&main_rocket, main_reaction.main_product_mol);
+        (void)ceaFacFromOF(&main_reaction, &main_rocket);
+        (void)recalculateNozzleDiametersAndAreas(&main_rocket);
         break;
       case 2:
         (void)printf("\nInput ml of oxidizer: ");
@@ -282,18 +285,24 @@ int main(){
         temp_input *= main_reaction.oxidizer_molarity / 1000;
         (void)recalculateFromOxidizerMol(&main_reaction,  temp_input);
         (void)chamberPressureFromMol(&main_rocket, main_reaction.main_product_mol);
+        (void)ceaFacFromOF(&main_reaction, &main_rocket);
+        (void)recalculateNozzleDiametersAndAreas(&main_rocket);
         break;
       case 3:
         (void)printf("\nInput moles of fuel: ");
         (void)scanf("%f", &temp_input);
         (void)recalculateFromFuelMol(&main_reaction, temp_input);
         (void)chamberPressureFromMol(&main_rocket, main_reaction.main_product_mol);
+        (void)ceaFacFromOF(&main_reaction, &main_rocket);
+        (void)recalculateNozzleDiametersAndAreas(&main_rocket);
         break;
       case 4:
         (void)printf("\nInput moles of oxidizer: ");
         (void)scanf("%f", &temp_input);
         (void)recalculateFromOxidizerMol(&main_reaction, temp_input);
         (void)chamberPressureFromMol(&main_rocket, main_reaction.main_product_mol);
+        (void)ceaFacFromOF(&main_reaction, &main_rocket);
+        (void)recalculateNozzleDiametersAndAreas(&main_rocket);
         break;
       case 5:
         (void)printf("\nInput target moles of main product: ");
@@ -301,6 +310,8 @@ int main(){
         temp_input *= 2;
         (void)recalculateFromOxidizerMol(&main_reaction, temp_input);
         (void)chamberPressureFromMol(&main_rocket, main_reaction.main_product_mol);
+        (void)ceaFacFromOF(&main_reaction, &main_rocket);
+        (void)recalculateNozzleDiametersAndAreas(&main_rocket);
         break;
       case 6:
         (void)printf("New OF ratio: ");
@@ -310,6 +321,7 @@ int main(){
         if(main_reaction.main_product_mol > 0)
           (void)chamberPressureFromMol(&main_rocket, main_reaction.main_product_mol);
         (void)ceaFacFromOF(&main_reaction, &main_rocket);
+        (void)recalculateNozzleDiametersAndAreas(&main_rocket);
         break;
       case 7:
         (void)printf("New oxidizer molarity: ");
@@ -320,12 +332,16 @@ int main(){
           (void)recalculateFromFuelMol(&main_reaction, main_reaction.fuel_mol);
           (void)chamberPressureFromMol(&main_rocket, main_reaction.main_product_mol);
         }
+        (void)ceaFacFromOF(&main_reaction, &main_rocket);
+        (void)recalculateNozzleDiametersAndAreas(&main_rocket);
         break;
       case 8:
         (void)printf("New oxidizer wt%%: ");
         (void)scanf("%f", &temp_input);
         main_reaction.oxidizer_wt_percentage = temp_input;
         main_reaction.oxidizer_molarity = HClWeightPercentageToMolarity(temp_input);
+        (void)ceaFacFromOF(&main_reaction, &main_rocket);
+        (void)recalculateNozzleDiametersAndAreas(&main_rocket);
         break;
       case 9:
         (void)printf("Target chamber pressure (atm): ");
@@ -336,28 +352,34 @@ int main(){
         main_rocket.chamber_pressure = main_rocket.chamber_pressure_bar;
         main_rocket.pressure_ratio[0] = main_rocket.chamber_pressure;
         (void)recalculateFromOxidizerMol(&main_reaction, molFromChamberPressureAndVolume(&main_rocket)*2);
+        (void)ceaFacFromOF(&main_reaction, &main_rocket);
+        (void)recalculateNozzleDiametersAndAreas(&main_rocket);
         break;
       case 10:
-        (void)printf("Target chamber pressure (Pa): ");
+        (void)printf("Target chamber pressure (kPa): ");
         (void)scanf("%f", &temp_input);
+        temp_input *= 1000;
         main_rocket.chamber_pressure_pa = temp_input;
         main_rocket.chamber_pressure_atm = PA_TO_ATM(temp_input);
         main_rocket.chamber_pressure_bar = PA_TO_BAR(temp_input);
         main_rocket.chamber_pressure = main_rocket.chamber_pressure_bar;
         main_rocket.pressure_ratio[0] = main_rocket.chamber_pressure;
         (void)recalculateFromOxidizerMol(&main_reaction, molFromChamberPressureAndVolume(&main_rocket)*2);
+        (void)ceaFacFromOF(&main_reaction, &main_rocket);
+        (void)recalculateNozzleDiametersAndAreas(&main_rocket);
         break;
       case 11:
         (void)printf("Chamber to throat ratio (Ac/At): ");
         (void)scanf("%f", &temp_input);
         main_rocket.ac_at = temp_input;
+        (void)ceaFacFromOF(&main_reaction, &main_rocket);
+        (void)recalculateNozzleDiametersAndAreas(&main_rocket);
         break;
       case 12:
         (void)printf("Chamber volume in mL: ");
         (void)scanf("%f", &temp_input);
-        main_rocket.chamber_diameter_m = temp_input;
-        main_rocket.chamber_area_m2 = pow(main_rocket.chamber_diameter_m/2, 2) * 3.14159265359;
-      case 20:
+        main_rocket.chamber_volume_L = temp_input / 1000;
+      case 50:
         (void)ceaFacFromOF(&main_reaction, &main_rocket);
         (void)recalculateNozzleDiametersAndAreas(&main_rocket);
         break;
