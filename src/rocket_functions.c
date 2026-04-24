@@ -15,9 +15,13 @@ struct RocketData createEmptyRocketData(){
   /* pressures   */
   empty_rocket_data.chamber_pressure_atm = 0; /* kind of just for show */
   empty_rocket_data.chamber_pressure_pa  = 0;
+  empty_rocket_data.chamber_cone_length_m = 0;
+  empty_rocket_data.chamber_cone_half_angle_degrees = 0;
   empty_rocket_data.exit_pressure_atm    = 0;
   empty_rocket_data.exit_pressure_pa     = 0;
-  empty_rocket_data.cone_length_m        = 0;
+  empty_rocket_data.exit_cone_length_m        = 0;
+  empty_rocket_data.exit_cone_length_m = 0;
+  empty_rocket_data.exit_cone_half_angle_degrees = 0;
 
   /* meaures     */
   empty_rocket_data.chamber_volume_L      = 0;
@@ -47,12 +51,15 @@ void defineDefaultRocketData(struct RocketData *rocket_data){
   rocket_data->chamber_pressure_atm  = 5;
   rocket_data->chamber_pressure_pa   = rocket_data->chamber_pressure_atm * 101300;
   rocket_data->chamber_pressure_bar  = rocket_data->chamber_pressure_atm * 1.01325;
+  rocket_data->chamber_cone_half_angle_degrees = 45;
   rocket_data->pressure_ratio[0] = rocket_data->chamber_pressure_bar;
   rocket_data->chamber_temperature_K = AMBIENT_TEMP_K;
   rocket_data->chamber_volume_L      = 0.600;
   rocket_data->chamber_diameter_m    = 0.01275;
   rocket_data->chamber_area_m2       = pow(rocket_data->chamber_diameter_m/2, 2) * 3.14159265359;
   rocket_data->c_star_m_over_s       = 0;
+
+  rocket_data->exit_cone_half_angle_degrees = 15;
 
   rocket_data->subar[0] = 0.0;
   rocket_data->supar[0] = 0.0;
@@ -86,5 +93,11 @@ void recalculateNozzleDiametersAndAreas(struct RocketData *rocket_data){
   rocket_data->exit_area_m2 = rocket_data->throat_area_m2 * rocket_data->ae_at;
   rocket_data->exit_diameter_m = 2 * sqrt(rocket_data->exit_area_m2 / 3.14159265359);
 
-  rocket_data->cone_length_m = ( rocket_data->exit_diameter_m / 2 - rocket_data->throat_diameter_m / 2) / 0.26794919243;
+  /* 
+   *   cone_radius - throat_radius
+   *  ----------------------------
+   *        tan(half-angle)
+   */
+  rocket_data->exit_cone_length_m = ( rocket_data->exit_diameter_m / 2 - rocket_data->throat_diameter_m / 2) / 0.26794919243;
+  rocket_data->chamber_cone_length_m = ( rocket_data->chamber_diameter_m / 2 - rocket_data->throat_diameter_m / 2);
 }

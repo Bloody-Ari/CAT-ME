@@ -32,13 +32,16 @@ struct RocketData{
   float chamber_temperature_K;
   float chamber_area_m2;
   float chamber_diameter_m;
+  float chamber_cone_length_m;
+  float chamber_cone_half_angle_degrees;
 
   float throat_area_m2;
   float throat_diameter_m;
 
   float exit_diameter_m;
   float exit_area_m2;
-  float cone_length_m;
+  float exit_cone_length_m;
+  float exit_cone_half_angle_degrees;
 
   /* performance */
   float c_star_m_over_s;

@@ -232,11 +232,14 @@ int main(){
     (void)printf("╠════════════════════════════════════════════════╣\n");
     (void)printf("║ Chamber diameter:    %12.3f mm           ║\n", main_rocket.chamber_diameter_m * 1000);
     (void)printf("║ Chamber area:        %12.3f mm²          ║\n", main_rocket.chamber_area_m2 * 1000);
+    (void)printf("║ Chamber cone lenght: %12.3f mm           ║\n", main_rocket.chamber_cone_length_m * 1000);
+    (void)printf("║ Chamber cone alpha:  %12.3f °            ║\n", main_rocket.chamber_cone_half_angle_degrees);
     (void)printf("║ Throat diameter:     %12.3f mm           ║\n", main_rocket.throat_diameter_m * 1000);
     (void)printf("║ Throat area:         %12.3f mm²          ║\n", main_rocket.throat_area_m2 * 1000);
     (void)printf("║ Exit diameter:       %12.3f mm           ║\n", main_rocket.exit_diameter_m * 1000);
     (void)printf("║ Exit area:           %12.3f mm²          ║\n", main_rocket.exit_area_m2 * 1000);
-    (void)printf("║ Cone lenght:         %12.3f mm           ║\n", main_rocket.cone_length_m * 1000);
+    (void)printf("║ Exit cone lenght:    %12.3f mm           ║\n", main_rocket.exit_cone_length_m * 1000);
+    (void)printf("║ Exit cone alpha:     %12.3f °            ║\n", main_rocket.exit_cone_half_angle_degrees);
     (void)printf("╠════════════════════════════════════════════════╣\n");
     (void)printf("║                  Rocket ratios:                ║\n");
     (void)printf("╠════════════════════════════════════════════════╣\n");
