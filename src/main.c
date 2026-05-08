@@ -15,10 +15,16 @@
 #include <math.h>
 #endif
 
+#ifndef PyObject
+#include <Python.h>
+#endif
+
 #include "include/reaction_types.h"
 #include "include/reaction_functions.h"
 #include "include/rocket_types.h"
 #include "include/rocket_functions.h"
+#include "include/pynef_types.h"
+#include "include/pynef_functions.h"
 
 /* should return the solution maybe??? */
 /* not sure, the structs maybe should have the options required */
@@ -171,6 +177,7 @@ int main(){
   /* defines the stoichiometric ratio of the reaction */
   /*char mol_temp_input[10];*/
   int choice = -1;
+  float nozzle_parameters[5]; /* should be a rocket thing tho */
 
   struct ReactionData main_reaction = createEmptyReactionStruct();
   struct RocketData main_rocket = createEmptyRocketData();
@@ -261,6 +268,8 @@ int main(){
     (void)printf(" 10. Set target chamber pressure (Pa)\n");
     (void)printf(" 11. Set chamber to throat ratio (Ac/At)\n");
     (void)printf(" 12. Set chamber volume (ml)\n");
+    (void)printf(" 21. Export stl\n");
+    (void)printf(" 22. Export 3mf\n");
     (void)printf(" 50. Refresh rocket\n");
     /*(void)printf("9. Set chamber to throat area ratio\n");*/
     (void)printf("\n-1. Quit\n");
@@ -386,6 +395,14 @@ int main(){
         (void)chamberPressureFromMol(&main_rocket, main_reaction.main_product_mol);
         (void)ceaFacFromOF(&main_reaction, &main_rocket);
         (void)recalculateNozzleDiametersAndAreas(&main_rocket);
+      case 21:
+        (void)printf("Exporting...");
+        nozzle_parameters[0] = (main_rocket.chamber_diameter_m * 1000) / 2;
+        nozzle_parameters[1] = (main_rocket.chamber_cone_length_m * 1000);
+        nozzle_parameters[2] = (main_rocket.throat_diameter_m * 1000) / 2;
+        nozzle_parameters[3] = (main_rocket.exit_cone_length_m * 1000);
+        nozzle_parameters[4] = (main_rocket.exit_cone_length_m * 1000);
+        pynefWrapper(nozzle_parameters, "Testing", "stl", NULL);
       case 50:
         (void)ceaFacFromOF(&main_reaction, &main_rocket);
         (void)recalculateNozzleDiametersAndAreas(&main_rocket);

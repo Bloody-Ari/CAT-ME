@@ -24,7 +24,9 @@ NAME := "cat-me" #carpinchos aid tool, melissa edition
 #-------------------------------------------------------------------------------------------#
 
 CC := gcc 
-CFLAGS := -ansi -lm -Wall -Werror -Wpedantic -g
+# CFLAGS := -ansi -lm -Wall -Werror -Wpedantic -g
+CFLAGS := -lm -Wall -Werror -Wpedantic -g
+
 CPPFLAGS := -MMD
 
 SRC_DIR := src
@@ -45,14 +47,19 @@ TARGET_DIR := bin
 BINS := cat-me
 TARGETS := $(BINS:%=$(TARGET_DIR)/%)
 
+# should work with other python versions tho
+# PYTHONFLAGS := -isystem /usr/include/python3.14 -lpython3.14
+PYTHONFLAGS := $(subst -I,-isystem ,$(shell pkg-config --cflags python3)) $(shell python3-config --ldflags --embed)
+
 $(NAME): directories $(OBJS)
-	$(CC) $(CFLAGS) $(CPPFLAGS) $(OBJS) lib/libcea_bindc.so -o $(TARGETS)
+	echo $(PYTHONFLAGS)
+	$(CC) $(CFLAGS) $(CPPFLAGS) $(PYTHONFLAGS) $(OBJS) lib/pynef_cbinds.so lib/libcea_bindc.so -o $(TARGETS)
 
 directories:
 	mkdir -p $(TARGET_DIR) $(BUILD_DIR)
 
 $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c
-	$(CC) $(CFLAGS) $(CPPFLAGS) -c -o $@ $<
+	$(CC) $(CFLAGS) $(CPPFLAGS) $(PYTHONFLAGS) -c -o $@ $<
 	$(info CREATED $@)
 
 run: clean $(NAME)
